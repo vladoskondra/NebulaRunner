@@ -1,0 +1,19 @@
+{
+  "name": "",
+  "cur_hp": 0,
+  "max_hp": 0,
+  "lvl": 0,
+  "energy": 5,
+  "state": "none",
+  "captcha": false,
+  "mode": "stop",
+  "intox": false,
+  "target": "",
+  "farm_loc": "",
+  "loc": "default",
+  "prof": "none",
+  "prof_loc": "",
+  "edem": false,
+  "multitool": false,
+  "cosmos": false
+}
