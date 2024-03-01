@@ -1,5 +1,4 @@
 import git
-import sys
 from telethon import TelegramClient
 from modules.utils.files import *
 
@@ -10,7 +9,6 @@ if len(diff) != 0:
     print('Обнаружена новая версия скрипта, обновляю!')
     git.Repo('.git').remote().pull()
     input('Скрипт обновлен, перезапусти скрипт... ')
-    sys.exit()
 else:
     print('Скрипт последней версии')
 
