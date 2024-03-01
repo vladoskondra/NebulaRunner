@@ -31,7 +31,7 @@ while config['api_id'] == 0 or config['api_hash'] == '':
         inp = input('Введи App api_id: ')
         config['api_id'] = int(inp)
     if config['api_hash'] == '':
-        inp = input('Введи App api_id: ')
+        inp = input('Введи App api_hash: ')
         config['api_hash'] = inp
     update_file(config)
 if config['api_id'] != 0 or config['api_hash'] != '':
