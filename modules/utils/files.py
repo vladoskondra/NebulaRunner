@@ -25,6 +25,5 @@ def update_file(dict_to_push):
     if dict_cat == 'config':
         file_name = os.path.join(root_dir, 'configs', 'tg_API.json')
     print(root_dir)
-    # print(file_name)
     with open(file_name, 'w', encoding='utf-8') as outfile:
         json.dump(dict_to_push, outfile, ensure_ascii=False, indent=2)
