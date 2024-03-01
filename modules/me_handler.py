@@ -10,7 +10,7 @@ async def user_handler(event):
     message = event.message.to_dict()
     text = message['message']
     if text.lower() == '.help':
-        event.reply('Доступные команды:\n\n'
+        await client.send_message('me', 'Доступные команды:\n\n'
                     '.farm — режим обычного гринда мобов\n'
                     '.boost — режим гринда с банками\n'
                     '.peh — режим перемещения на ПЕХе (перед включением необходимо долететь до Островов)\n'
