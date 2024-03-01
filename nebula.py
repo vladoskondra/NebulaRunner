@@ -15,13 +15,10 @@ def main():
         client.start()
     else:
         client.start(password=config['password'])
-    # me = await client.get_me()
-    # print('added handlers')
     client.add_event_handler(user_handler)
     client.add_event_handler(game_handler)
     client.add_event_handler(peh_handler)
     asyncio.ensure_future(client.send_message('me', 'Бот запущен'))
-    # print('sent to me')
     asyncio.ensure_future(client.send_message(const['game'], '/hero'))
     read_file('hero')
     asyncio.ensure_future(status())
