@@ -22,6 +22,7 @@ def update_file(dict_to_push):
         file_name = f'{root_dir}/configs/my_hero.json'
     if dict_cat == 'config':
         file_name = f'{root_dir}/configs/tg_API.json'
+    print(root_dir)
     print(file_name)
     with open(file_name, 'w', encoding='utf-8') as outfile:
         json.dump(dict_to_push, outfile, ensure_ascii=False, indent=2)
