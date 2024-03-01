@@ -18,6 +18,7 @@ def read_file(file):
 
 def update_file(dict_to_push):
     dict_cat = f"{dict_to_push=}".split("=")[0]
+    print(dict_cat)
     file_name = ''
     if dict_cat == 'hero':
         file_name = os.path.join(root_dir, 'configs', 'my_hero.json')
