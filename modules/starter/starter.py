@@ -33,7 +33,7 @@ while config['api_id'] == 0 or config['api_hash'] == '':
     if config['api_hash'] == '':
         inp = input('Введи App api_hash: ')
         config['api_hash'] = inp
-    update_file(config)
+    update_file('config', config)
 if config['api_id'] != 0 or config['api_hash'] != '':
     if config['password'] == '-':
         pw_inp = input('На аккаунте установлен пароль? (Y/n) ')
@@ -44,7 +44,7 @@ if config['api_id'] != 0 or config['api_hash'] != '':
         elif pw_inp == 'Y':
             inp = input('Укажи пароль (он будет храниться локально только у тебя): ')
             config['password'] = inp
-        update_file(config)
+        update_file('config', config)
     client = TelegramClient('NebulaBot', config["api_id"], config["api_hash"], system_version="4.16.30-vxCUSTOM")
 
 

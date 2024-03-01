@@ -44,7 +44,7 @@ async def game_handler(event):
             hero['max_hp'] = int(text.split('❤️ Здоровье: ')[1].split('/')[1].split('\n')[0])
             hero['lvl'] = int(text.split('🏅 Уровень: ')[1].split(' 💠 ')[0])
             hero['energy'] = int(text.split('⚡️ Энергия: ')[1].split('/')[0])
-            update_file('hero')
+            update_file('hero', hero)
         # INTOX REFRESH
         if 'Интоксикация восстановлена!' in text and hero['intox'] is True:
             hero['intox'] = False
