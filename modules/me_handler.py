@@ -85,4 +85,4 @@ async def user_handler(event):
         pin = text.split('\n')[0].split(' ')[1]
         point = await get_peh_point(pin.lower())
         print(point)
-    await update_file('hero', hero)
+    update_file('hero', hero)
