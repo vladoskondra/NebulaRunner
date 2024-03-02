@@ -13,7 +13,8 @@ if "Your branch is up to date with 'origin/master'" in str(status):
     print('UPDATED')
 # if len(diff) != 0:
 #     print('Обнаружена новая версия скрипта, обновляю!')
-git.Repo('.git').remote().pull()
+# git.Repo('.git').remote().pull()
+# repo.git.stash('drop')
 #     input('Скрипт обновлен, перезапусти скрипт... ')
 # else:
 #     print('Скрипт последней версии')
