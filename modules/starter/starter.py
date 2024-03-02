@@ -6,6 +6,7 @@ from modules.utils.files import *
 repo = git.Repo("./.git", search_parent_directories=True)
 status = repo.git.status()
 print(status)
+print(repo.index.diff(repo.head.commit))
 # if len(diff) != 0:
 #     print('Обнаружена новая версия скрипта, обновляю!')
 #     git.Repo('.git').remote().pull()
