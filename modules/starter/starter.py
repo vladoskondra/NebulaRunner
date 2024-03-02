@@ -6,11 +6,14 @@ from modules.utils.files import *
 repo = git.Repo("./.git", search_parent_directories=True)
 status = repo.git.status()
 print(status)
+for x in repo.index.diff("HEAD"):
+    # Just print
+    print(x)
 if "Your branch is up to date with 'origin/master'" in str(status):
     print('UPDATED')
 # if len(diff) != 0:
 #     print('Обнаружена новая версия скрипта, обновляю!')
-#     git.Repo('.git').remote().pull()
+git.Repo('.git').remote().pull()
 #     input('Скрипт обновлен, перезапусти скрипт... ')
 # else:
 #     print('Скрипт последней версии')
