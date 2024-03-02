@@ -3,14 +3,15 @@ from telethon import TelegramClient
 from modules.utils.files import *
 
 
-git.Repo('.git').remotes.origin.fetch()
-diff = str(git.Repo('.git').git.diff('origin/master')).splitlines()
-if len(diff) != 0:
-    print('Обнаружена новая версия скрипта, обновляю!')
-    git.Repo('.git').remote().pull()
-    input('Скрипт обновлен, перезапусти скрипт... ')
-else:
-    print('Скрипт последней версии')
+repo = git.Repo("./.git", search_parent_directories=True)
+status = repo.git.status()
+print(status)
+# if len(diff) != 0:
+#     print('Обнаружена новая версия скрипта, обновляю!')
+#     git.Repo('.git').remote().pull()
+#     input('Скрипт обновлен, перезапусти скрипт... ')
+# else:
+#     print('Скрипт последней версии')
 
 hero = read_file('hero')
 
