@@ -1,5 +1,6 @@
 import asyncio
 from random import randint
+import re
 from modules.starter.starter import client, hero, const
 from modules.game.movement import do_move
 from modules.game.healing import do_heal
@@ -95,7 +96,7 @@ async def mob_farm(event):
         one_hit = []
         for t_dmg in text.split('\n'):
             if 'нанес удар 💥' in t_dmg:
-                hit = int(t_dmg.split('нанес удар 💥')[1].replace('⛓', ''))
+                hit = int(re.findall(r'\b\d+\b', t_dmg.split('нанес удар 💥')[1].replace('⛓', ''))[0])
                 taken_damage += hit
                 one_hit.append(hit)
         hero['energy'] = int(text.split('⚡️ Энергия: ')[1].split('/')[0])

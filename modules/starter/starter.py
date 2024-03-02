@@ -1,22 +1,7 @@
-import git
 from telethon import TelegramClient
 from modules.utils.files import *
 
-
-# repo = git.Repo("./.git", search_parent_directories=True)
-# status = repo.git.status()
-# print(status)
-# for x in repo.index.diff("HEAD"):
-#     # Just print
-#     print(x)
 print('UPDATED')
-# if len(diff) != 0:
-#     print('Обнаружена новая версия скрипта, обновляю!')
-# git.Repo('.git').remote().pull()
-# repo.git.stash('drop')
-#     input('Скрипт обновлен, перезапусти скрипт... ')
-# else:
-#     print('Скрипт последней версии')
 
 hero = read_file('hero')
 
