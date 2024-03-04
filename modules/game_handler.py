@@ -5,12 +5,12 @@ from telethon import events
 from modules.starter.starter import hero, const
 from modules.utils import time_handler
 from modules.game.movement import do_move
-from modules.utils.files import *
 from modules.game.captcha import solve_captcha
 from modules.game.grind import mob_farm
 from modules.game.dungeon import dungeon_handler
 from modules.game.energy_update import energy_full, energy_plus
 from modules.peh.peh import peh_runner
+from modules.game.hero_handler import update_hero_from_game
 
 
 full_energy_list = ['🌏 Сервер был перезапущен.\n\n⚡️ Энергия восполнена',
@@ -38,13 +38,8 @@ async def game_handler(event):
             await asyncio.sleep(randint(2, 7))
             await do_move()
         # UPDATE HERO INFO
-        if '🧬 Cимуляция №: ' in text:
-            hero['name'] = text.split('📝 Имя: ')[1].split('\n')[0]
-            hero['cur_hp'] = int(text.split('❤️ Здоровье: ')[1].split('/')[0])
-            hero['max_hp'] = int(text.split('❤️ Здоровье: ')[1].split('/')[1].split('\n')[0])
-            hero['lvl'] = int(text.split('🏅 Уровень: ')[1].split(' 💠 ')[0])
-            hero['energy'] = int(text.split('⚡️ Энергия: ')[1].split('/')[0])
-            update_file('hero', hero)
+        if '🧬 Cимуляция №: ' in text or all(x in text for x in ['🧬: ', '📟: /profilesize']):
+            await update_hero_from_game(text)
         # INTOX REFRESH
         if 'Интоксикация восстановлена!' in text and hero['intox'] is True:
             hero['intox'] = False

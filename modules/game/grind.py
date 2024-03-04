@@ -6,6 +6,7 @@ from modules.game.movement import do_move
 from modules.game.healing import do_heal
 from modules.game.farm_resources import farm_prof
 from modules.game.boost_energy import drink_energy
+from modules.game.fight_sim import fight_simulation
 
 
 async def mob_farm(event):
@@ -107,9 +108,10 @@ async def mob_farm(event):
             elif f"{hero['name']}(💔" in text:
                 hero['cur_hp'] = int(text.split(f"{hero['name']}(💔")[1].split('/')[0])
             print(hero['cur_hp'])
-            if hero['cur_hp'] > taken_damage*1.2 and hero['cur_hp'] > max(one_hit)*2 and hero['energy'] > 0:
+            win_chance = await fight_simulation()
+            if win_chance >= 99.5 and hero['energy'] > 0:
                 print('Yes, you can still fight')
-                await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Готов еще бить")
+                await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Готов еще бить, шанс на успех: {win_chance}")
                 await client.send_message(const["game"], '👀 Осмотреть местность')
             else:
                 await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Собираюсь домой")
