@@ -13,13 +13,13 @@ async def solve_captcha(event):
         try:
             message = event.message
             print('КАПТЧА')
-            print(event)
+            # print(event)
             url = ''
             if 'reply_markup' in message:
-                print('true reply')
+                # print('true reply')
                 reply_markup = message['reply_markup']
                 url = reply_markup['rows'][0]['buttons'][0]['url']
-                print(url)
+                # print(url)
             else:
                 entities = event.message.entities
                 for ent in entities:
@@ -31,7 +31,8 @@ async def solve_captcha(event):
             dr.get(url)
             await asyncio.sleep(randint(3, 6))
             await asyncio.sleep(20)
-        except:
+        except Exception as error:
+            print(f"Catch ERROR by CAPTCHA:\n{error}")
             await client.send_message('me', 'Не удалось пройти капчу, нужно смотреть ошибку.\nБот выключен')
             hero['mode'] = 'stop'
     else:
