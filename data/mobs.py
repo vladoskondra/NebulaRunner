@@ -1205,10 +1205,10 @@ def get_mob(lvl, cls='any'):
              'description': 'Голем невиданной силы, призван алхимиками в лаборатории дистрикта.'}]
     f_mobs = []
     for m in mobs:
-        if m['level'] == lvl:
+        if m['level'] == lvl and 'monsterType' in m:
             if cls == 'any':
-                f_mobs.append(m)
+                f_mobs = m
             else:
                 if 'monsterType' in m and m['monsterType'].lower() == cls:
-                    f_mobs.append(m)
+                    f_mobs = m
     return f_mobs

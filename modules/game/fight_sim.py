@@ -30,6 +30,7 @@ async def fight_simulation():
     mob = get_mob(hero['mob_lvl'], cls=mob_cls)
     enemy_obj = {
         'name': 'mob',
+        'class': mob['monsterType'].lower(),
         'lvl': mob['level'],
         'hps': mob['hP'],
         'hpl': mob['hP'],
