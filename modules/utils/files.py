@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 root_dir = Path(__file__).parent.parent.parent
@@ -63,5 +64,7 @@ def update_file(category, data):
         file_name = f'{root_dir}/configs/my_hero.json'
     if category == 'config':
         file_name = f'{root_dir}/configs/tg_API.json'
+    if not Path(f'{root_dir}/configs').is_dir():
+        os.makedirs(f'{root_dir}/configs')
     with open(file_name, 'w', encoding='utf-8') as outfile:
         json.dump(data, outfile, ensure_ascii=False, indent=2)
