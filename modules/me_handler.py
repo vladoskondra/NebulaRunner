@@ -12,7 +12,7 @@ async def user_handler(event):
     if text.lower() == '.help':
         await client.send_message('me', 'Доступные команды:\n\n'
                                         '.mobs lvl cls — указать уровень моба для фарма, где __lvl__ — числовой уровень моба,'
-                                        ' а __cls__ — его класс\n'
+                                        ' а __cls__ — его класс (w - Воин, r - Лучник, m - Маг)\n'
                                         '.farm — режим обычного гринда мобов\n'
                                         '.boost — режим гринда с банками\n'
                                         '.peh — режим перемещения на ПЕХе (перед включением необходимо долететь до Островов)\n'
@@ -43,6 +43,13 @@ async def user_handler(event):
             msg_to_del = await client.send_message('me',
                                                    f'Не указана локация для профы, используй "`.prof_loc` " '
                                                    f'и вид добычи (лес, трава, рыба или камень)')
+            await asyncio.sleep(60)
+            await client.delete_messages('me', msg_to_del)
+        if hero['mob_lvl'] == 1 or hero['mob_cls'] not in ['warrior', 'ranger', 'mage']:
+            msg_to_del = await client.send_message('me',
+                                                   f'Не указан моб для фарма! Чтобы указать, используй "`.mobs lvl cls`",'
+                                                   f' где __lvl__ — числовой уровень моба, а __cls__ — его класс '
+                                                   f'(w - Воин, r - Лучник, m - Маг)')
             await asyncio.sleep(60)
             await client.delete_messages('me', msg_to_del)
     if '.edem ' in text:
@@ -92,35 +99,32 @@ async def user_handler(event):
             hero['captcha'] = False
             await event.reply('Выключен автопроход капчи')
     if '.mobs ' in text:
-        if len(text.split(' ')) == 2 or len(text.split(' ')) == 3:
+        if len(text.split(' ')) == 3:
             try:
-                if len(text.split(' ')) == 2:
-                    mob_lvl = int(text.split(' ')[1])
-                    hero['mob_lvl'] = mob_lvl
-                    await event.reply(f'Выбран {mob_lvl} уровень моба для фарма')
-                elif len(text.split(' ')) == 3:
-                    mob_lvl = int(text.split(' ')[1])
-                    mob_cls_raw = text.split(' ')[2]
+                mob_lvl = int(text.split(' ')[1])
+                mob_cls_raw = text.split(' ')[2]
+                if mob_cls_raw in ['w', 'r', 'm']:
                     if mob_cls_raw == 'w':
                         hero['mob_cls'] = 'warrior'
                     elif mob_cls_raw == 'r':
                         hero['mob_cls'] = 'ranger'
                     elif mob_cls_raw == 'm':
                         hero['mob_cls'] = 'mage'
-                    else:
-                        hero['mob_cls'] = 'any'
                     hero['mob_lvl'] = mob_lvl
                     await event.reply(f'Выбран {mob_lvl} уровень моба для фарма')
+                else:
+                    await event.reply(f'Неверно указан класс моба. Используй команду "`.mobs {mob_lvl} cls`", '
+                                      f'где __cls__ — класс моба (w - Воин, r - Лучник, m - Маг)')
             except:
                 await event.reply('Неправильно указан уровень моба для фарма.\n'
                                   'Используй команду "`.mobs lvl`" или "`.mobs lvl cls`", '
                                   'где __lvl__ — уровень моба для фарма, '
-                                  'а __cls__ — класс моба (w - Воин, r - Лучник, m - Маг) __(опционально)__')
+                                  'а __cls__ — класс моба (w - Воин, r - Лучник, m - Маг)')
         else:
             await event.reply('Неправильно указан уровень моба для фарма.\n'
                               'Используй команду "`.mobs lvl`" или "`.mobs lvl cls`", '
                               'где __lvl__ — уровень моба для фарма, '
-                              'а __cls__ — класс моба (w - Воин, r - Лучник, m - Маг) __(опционально)__')
+                              'а __cls__ — класс моба (w - Воин, r - Лучник, m - Маг)')
     if text.startswith('⚔️ '):
         pin = text.split('\n')[0].split(' ')[1]
         point = await get_peh_point(pin.lower())
