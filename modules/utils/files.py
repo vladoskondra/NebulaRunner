@@ -46,7 +46,7 @@ def read_file(file):
             "api_hash": "",
             "password": "-"
         }
-    if Path(file_name).is_file():
+    if Path(f'{root_dir}/configs').is_dir() and Path(file_name).is_file():
         with open(file_name, encoding='utf-8') as json_file:
             loaded_json = json.load(json_file)
     else:
