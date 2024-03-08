@@ -16,19 +16,23 @@ async def solve_captcha(event):
             # print(event)
             url = ''
             if 'reply_markup' in message:
-                # print('true reply')
+                print('true reply')
                 reply_markup = message['reply_markup']
                 url = reply_markup['rows'][0]['buttons'][0]['url']
-                # print(url)
+                print(url)
             else:
                 entities = event.message.entities
                 for ent in entities:
                     if isinstance(ent, MessageEntityTextUrl):
                         if "llab.orion-nebula.space" in ent.url:
                             url = ent.url
+            print('waiting')
             await asyncio.sleep(randint(5, 9))
+            print('ready to open chrome')
             dr = uc.Chrome(service=ChromeService(ChromeDriverManager(driver_version=get_chrome_version()).install()))
+            print('started webdriver')
             dr.get(url)
+            print('open url, wait')
             await asyncio.sleep(randint(3, 6))
             await asyncio.sleep(20)
         except Exception as error:

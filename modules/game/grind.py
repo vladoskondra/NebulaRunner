@@ -110,7 +110,7 @@ async def mob_farm(event):
             print(hero['cur_hp'])
             win_chance = await fight_simulation()
             if win_chance >= 99.5 and hero['energy'] > 0:
-                print('Yes, you can still fight')
+                print(f'Can still fight with chance of {win_chance}')
                 await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Готов еще бить, шанс на успех: {win_chance}")
                 await client.send_message(const["game"], '👀 Осмотреть местность')
             else:
