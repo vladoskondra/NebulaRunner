@@ -11,7 +11,7 @@ from modules.utils.get_chrome_version import get_chrome_version
 async def solve_captcha(event):
     if hero['captcha']:
         try:
-            message = event.message
+            message = event.message.to_dict()
             print('КАПТЧА')
             # print(event)
             url = ''
