@@ -29,7 +29,10 @@ async def solve_captcha(event):
             print('waiting')
             await asyncio.sleep(randint(5, 9))
             print('ready to open chrome')
-            dr = uc.Chrome(service=ChromeService(ChromeDriverManager().install()))
+            try:
+                dr = uc.Chrome(service=ChromeService(ChromeDriverManager().install()))
+            except:
+                dr = uc.Chrome()
             print('started webdriver')
             dr.get(url)
             print('open url, wait')
