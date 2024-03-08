@@ -5,7 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from random import randint
 from telethon.tl.types import MessageEntityTextUrl
 from modules.starter.starter import client, hero
-# from modules.utils.get_chrome_version import get_chrome_version
+from modules.utils.get_chrome_version import get_chrome_version
 
 
 async def solve_captcha(event):
@@ -29,10 +29,7 @@ async def solve_captcha(event):
             print('waiting')
             await asyncio.sleep(randint(5, 9))
             print('ready to open chrome')
-            try:
-                dr = uc.Chrome(service=ChromeService(ChromeDriverManager().install()))
-            except:
-                dr = uc.Chrome()
+            dr = uc.Chrome(service=ChromeService(ChromeDriverManager(driver_version=get_chrome_version()).install()))
             print('started webdriver')
             dr.get(url)
             print('open url, wait')
