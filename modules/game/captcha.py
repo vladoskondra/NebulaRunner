@@ -9,7 +9,7 @@ from modules.utils.get_chrome_version import get_chrome_version
 
 
 async def solve_captcha(event):
-    if hero['captcha']:
+    if hero["general_cfg"]['captcha']:
         try:
             message = event.message.to_dict()
             print('КАПТЧА')

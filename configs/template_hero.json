@@ -1,0 +1,44 @@
+{
+  "state": "none",
+  "mode": "none",
+  "cur_loc": "",
+  "loc": "default",
+  "target": "none",
+  "hero": {
+    "name": "",
+    "cur_hp": 0,
+    "max_hp": 0,
+    "lvl": 0,
+    "energy": 0,
+    "intox": false,
+    "class": "",
+    "emoji": "",
+    "atk": 0,
+    "def": 0,
+    "ddg": 0.0,
+    "crit": 0.0,
+    "acc": 0.0,
+    "spd": 0.0
+  },
+  "general_cfg": {
+    "captcha": false,
+    "edem": false
+  },
+  "farm_cfg": {
+    "farm_loc": "none",
+    "mob_lvl": 0,
+    "mob_cls": ""
+  },
+  "prof_cfg": {
+    "prof": "none",
+    "prof_loc": "none",
+    "catch_rare": false,
+    "multitool": false
+  },
+  "space": {
+    "cosmos": false,
+    "cosmos_farm_seek": false,
+    "space_seq": "A0",
+    "planet_size": 0
+  }
+}

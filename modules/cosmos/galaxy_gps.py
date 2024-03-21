@@ -1,42 +1,114 @@
+from modules.cosmos.galaxy_PathFinder import pathFinder
+from modules.starter.starter import hero
+
 tiles_index = [
-    {'name': 'A0', 'mobs': [1, 30]}, {'name': 'A1', 'mobs': [-1, -1]}, {'name': 'A2', 'mobs': [-1, -1]},
-    {'name': 'A3', 'mobs': [-1, -1]}, {'name': 'A4', 'mobs': [-1, -1]}, {'name': 'A5', 'mobs': [-1, -1]},
-    {'name': 'A6', 'mobs': [-1, -1]}, {'name': 'B1', 'mobs': [-1, -1]}, {'name': 'B2', 'mobs': [-1, -1]},
-    {'name': 'B3', 'mobs': [-1, -1]}, {'name': 'B4', 'mobs': [-1, -1]}, {'name': 'B5', 'mobs': [31, 33]},
-    {'name': 'B6', 'mobs': [-1, -1]}, {'name': 'B7', 'mobs': [-1, -1]}, {'name': 'B8', 'mobs': [-1, -1]},
-    {'name': 'C1', 'mobs': [-1, -1]}, {'name': 'C2', 'mobs': [-1, -1]}, {'name': 'C3', 'mobs': [-1, -1]},
-    {'name': 'C4', 'mobs': [-1, -1]}, {'name': 'C5', 'mobs': [33, 36]}, {'name': 'C6', 'mobs': [-1, -1]},
-    {'name': 'C7', 'mobs': [-1, -1]}, {'name': 'C8', 'mobs': [-1, -1]}, {'name': 'C9', 'mobs': [-1, -1]},
-    {'name': 'C10', 'mobs': [-1, -1]}, {'name': 'C11', 'mobs': [-1, -1]}, {'name': 'C12', 'mobs': [-1, -1]},
-    {'name': 'C13', 'mobs': [-1, -1]}, {'name': 'C14', 'mobs': [-1, -1]}, {'name': 'C15', 'mobs': [-1, -1]},
-    {'name': 'C16', 'mobs': [-1, -1]}, {'name': 'D1', 'mobs': [-1, -1]}, {'name': 'D2', 'mobs': [-1, -1]},
-    {'name': 'D3', 'mobs': [-1, -1]}, {'name': 'D4', 'mobs': [-1, -1]}, {'name': 'D5', 'mobs': [-1, -1]},
-    {'name': 'D6', 'mobs': [-1, -1]}, {'name': 'D7', 'mobs': [-1, -1]}, {'name': 'D8', 'mobs': [36, 38]},
-    {'name': 'D9', 'mobs': [-1, -1]}, {'name': 'D10', 'mobs': [-1, -1]}, {'name': 'D11', 'mobs': [-1, -1]},
-    {'name': 'D12', 'mobs': [-1, -1]}, {'name': 'D13', 'mobs': [-1, -1]}, {'name': 'D14', 'mobs': [38, 40]},
-    {'name': 'D15', 'mobs': [-1, -1]}, {'name': 'D16', 'mobs': [-1, -1]}, {'name': 'D17', 'mobs': [-1, -1]},
-    {'name': 'D18', 'mobs': [-1, -1]}, {'name': 'E1', 'mobs': [-1, -1]}, {'name': 'E2', 'mobs': [42, 44]},
-    {'name': 'E3', 'mobs': [-1, -1]}, {'name': 'E4', 'mobs': [-1, -1]}, {'name': 'E5', 'mobs': [-1, -1]},
-    {'name': 'E6', 'mobs': [-1, -1]}, {'name': 'E7', 'mobs': [-1, -1]}, {'name': 'E8', 'mobs': [-1, -1]},
-    {'name': 'E9', 'mobs': [-1, -1]}, {'name': 'E10', 'mobs': [-1, -1]}, {'name': 'E11', 'mobs': [-1, -1]},
-    {'name': 'E12', 'mobs': [-1, -1]}, {'name': 'E13', 'mobs': [-1, -1]}, {'name': 'E14', 'mobs': [-1, -1]},
-    {'name': 'E15', 'mobs': [-1, -1]}, {'name': 'E16', 'mobs': [-1, -1]}, {'name': 'E17', 'mobs': [-1, -1]},
-    {'name': 'E18', 'mobs': [-1, -1]}, {'name': 'E19', 'mobs': [-1, -1]}, {'name': 'E20', 'mobs': [-1, -1]},
-    {'name': 'E21', 'mobs': [-1, -1]}, {'name': 'E22', 'mobs': [-1, -1]}, {'name': 'E23', 'mobs': [-1, -1]},
-    {'name': 'E24', 'mobs': [-1, -1]}, {'name': 'E25', 'mobs': [-1, -1]}, {'name': 'E26', 'mobs': [40, 42]},
-    {'name': 'E27', 'mobs': [-1, -1]}, {'name': 'E28', 'mobs': [-1, -1]}, {'name': 'E29', 'mobs': [-1, -1]},
-    {'name': 'E30', 'mobs': [-1, -1]}, {'name': 'F1', 'mobs': [-1, -1]}, {'name': 'F2', 'mobs': [-1, -1]},
-    {'name': 'F3', 'mobs': [-1, -1]}, {'name': 'F4', 'mobs': [-1, -1]}, {'name': 'F5', 'mobs': [-1, -1]},
-    {'name': 'F6', 'mobs': [-1, -1]}, {'name': 'G1', 'mobs': [-1, -1]}, {'name': 'G2', 'mobs': [-1, -1]},
-    {'name': 'G3', 'mobs': [-1, -1]}, {'name': 'G4', 'mobs': [-1, -1]}, {'name': 'G5', 'mobs': [-1, -1]},
-    {'name': 'G6', 'mobs': [-1, -1]}, {'name': 'G7', 'mobs': [-1, -1]}, {'name': 'G8', 'mobs': [-1, -1]},
-    {'name': 'G9', 'mobs': [-1, -1]}, {'name': 'G10', 'mobs': [-1, -1]}, {'name': 'G11', 'mobs': [-1, -1]},
-    {'name': 'G12', 'mobs': [-1, -1]}, {'name': 'G13', 'mobs': [-1, -1]}, {'name': 'G14', 'mobs': [-1, -1]},
-    {'name': 'G15', 'mobs': [-1, -1]}, {'name': 'G16', 'mobs': [-1, -1]}, {'name': 'G17', 'mobs': [-1, -1]},
-    {'name': 'G18', 'mobs': [-1, -1]}, {'name': 'G19', 'mobs': [-1, -1]}, {'name': 'G20', 'mobs': [-1, -1]},
-    {'name': 'G21', 'mobs': [-1, -1]}, {'name': 'G22', 'mobs': [-1, -1]}, {'name': 'G23', 'mobs': [-1, -1]},
-    {'name': 'G24', 'mobs': [-1, -1]}, {'name': 'G25', 'mobs': [-1, -1]}, {'name': 'G26', 'mobs': [-1, -1]},
-    {'name': 'G27', 'mobs': [-1, -1]}, {'name': 'G28', 'mobs': [-1, -1]}, {'name': 'G29', 'mobs': [-1, -1]},
-    {'name': 'G30', 'mobs': [-1, -1]}, {'name': 'G31', 'mobs': [-1, -1]}, {'name': 'G32', 'mobs': [-1, -1]},
-    {'name': 'G33', 'mobs': [-1, -1]}, {'name': 'G34', 'mobs': [-1, -1]}, {'name': 'G35', 'mobs': [-1, -1]},
-    {'name': 'G36', 'mobs': [-1, -1]}]
+    {'seq': 'A0', 'name': 'Орион', 'mobs': [1, 30]}, {'seq': 'A1', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'A2', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'A3', 'name': 'Кеплер-4', 'mobs': [-1, -1]}, {'seq': 'A4', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'A5', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'A6', 'name': '', 'mobs': [-1, -1]}, {'seq': 'B1', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'B2', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'B3', 'name': '', 'mobs': [-1, -1]}, {'seq': 'B4', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'B5', 'name': 'Атлон', 'mobs': [31, 33]},
+    {'seq': 'B6', 'name': '', 'mobs': [-1, -1]}, {'seq': 'B7', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'B8', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C1', 'name': '', 'mobs': [-1, -1]}, {'seq': 'C2', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C3', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C4', 'name': '', 'mobs': [-1, -1]}, {'seq': 'C5', 'name': 'Таурус', 'mobs': [33, 36]},
+    {'seq': 'C6', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C7', 'name': '', 'mobs': [-1, -1]}, {'seq': 'C8', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C9', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C10', 'name': '', 'mobs': [-1, -1]}, {'seq': 'C11', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C12', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C13', 'name': '', 'mobs': [-1, -1]}, {'seq': 'C14', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C15', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'C16', 'name': '', 'mobs': [-1, -1]}, {'seq': 'D1', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D2', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D3', 'name': '', 'mobs': [-1, -1]}, {'seq': 'D4', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D5', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D6', 'name': '', 'mobs': [-1, -1]}, {'seq': 'D7', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D8', 'name': 'Кассиопея', 'mobs': [36, 38]},
+    {'seq': 'D9', 'name': '', 'mobs': [-1, -1]}, {'seq': 'D10', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D11', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D12', 'name': '', 'mobs': [-1, -1]}, {'seq': 'D13', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D14', 'name': 'Пиреис', 'mobs': [38, 40]},
+    {'seq': 'D15', 'name': '', 'mobs': [-1, -1]}, {'seq': 'D16', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D17', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'D18', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E1', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E2', 'name': 'Хот', 'mobs': [42, 44]},
+    {'seq': 'E3', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E4', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E5', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E6', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E7', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E8', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E9', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E10', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E11', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E12', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E13', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E14', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E15', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E16', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E17', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E18', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E19', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E20', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E21', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E22', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E23', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E24', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E25', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E26', 'name': 'Хорвус', 'mobs': [40, 42]},
+    {'seq': 'E27', 'name': '', 'mobs': [-1, -1]}, {'seq': 'E28', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E29', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'E30', 'name': '', 'mobs': [-1, -1]}, {'seq': 'F1', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'F2', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'F3', 'name': '', 'mobs': [-1, -1]}, {'seq': 'F4', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'F5', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'F6', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G1', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G2', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G3', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G4', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G5', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G6', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G7', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G8', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G9', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G10', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G11', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G12', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G13', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G14', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G15', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G16', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G17', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G18', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G19', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G20', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G21', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G22', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G23', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G24', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G25', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G26', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G27', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G28', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G29', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G30', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G31', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G32', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G33', 'name': '', 'mobs': [-1, -1]}, {'seq': 'G34', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G35', 'name': '', 'mobs': [-1, -1]},
+    {'seq': 'G36', 'name': '', 'mobs': [-1, -1]}]
+
+
+def galaxy_gps():
+    startPoint = tiles_index.index(next(seq for seq in tiles_index if seq['seq'] == hero["space"]['space_seq']))
+    endPoint = tiles_index.index(next(seq for seq in tiles_index if hero["farm_cfg"]['mob_lvl'] in range(seq['mobs'][0], seq['mobs'][1] + 1)))
+    pathArr = pathFinder()[startPoint][endPoint]
+    path_list = []
+    if startPoint == endPoint:
+        return 'Done'
+    else:
+        for path in pathArr['path']:
+            path_list.append(tiles_index[path]['seq'])
+        print(path_list)
+        return path_list
+
+
+def get_planet_seq(planet_name):
+    f_planet = next(planet for planet in tiles_index if planet['name'] == planet_name)
+    planet_seq = f_planet['seq']
+    return planet_seq
+
+
+def mob_emoji():
+    cur_planet = next(seq for seq in tiles_index if seq['seq'] == hero["space"]['space_seq'])
+    target_mob = hero["farm_cfg"]['mob_lvl']
+    emoji_list = ['🐺', '🐙', '🐍', '🦑']
+    # print(list(range(cur_planet['mobs'][0], cur_planet['mobs'][1] + 1)))
+    index = list(range(cur_planet['mobs'][0], cur_planet['mobs'][1] + 1)).index(target_mob)
+    return emoji_list[index]

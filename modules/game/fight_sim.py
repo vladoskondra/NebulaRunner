@@ -13,21 +13,21 @@ class MIN_DD_CLASS(enum.Enum):
 async def fight_simulation():
     player_obj = {
         'name': 'hero',
-        'class': hero['stats']['class'],
-        'lvl': hero['lvl'],
-        'hps': hero['cur_hp'],
-        'hpl': hero['cur_hp'],
-        'dmg': hero['stats']['atk'],
-        'def': hero['stats']['def'],
-        'ddg': hero['stats']['ddg'],
-        'crit': hero['stats']['crit'],
-        'acc': hero['stats']['acc'],
-        'speed': hero['stats']['spd']
+        'class': hero['hero']['class'],
+        'lvl': hero['hero']['lvl'],
+        'hps': hero['hero']['cur_hp'],
+        'hpl': hero['hero']['cur_hp'],
+        'dmg': hero['hero']['atk'],
+        'def': hero['hero']['def'],
+        'ddg': hero['hero']['ddg'],
+        'crit': hero['hero']['crit'],
+        'acc': hero['hero']['acc'],
+        'speed': hero['hero']['spd']
     }
     mob_cls = 'any'
-    if hero['mob_cls'] != 'any':
-        mob_cls = hero['mob_cls']
-    mob = get_mob(hero['mob_lvl'], cls=mob_cls)
+    if hero["farm_cfg"]['mob_cls'] != 'any':
+        mob_cls = hero["farm_cfg"]['mob_cls']
+    mob = get_mob(hero["farm_cfg"]['mob_lvl'], cls=mob_cls)
     enemy_obj = {
         'name': 'mob',
         'class': mob['monsterType'].lower(),

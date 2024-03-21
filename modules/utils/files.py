@@ -10,36 +10,8 @@ def read_file(file):
     raw = {}
     if file == 'hero':
         file_name = f'{root_dir}/configs/my_hero.json'
-        raw = {
-            "name": "",
-            "cur_hp": 0,
-            "max_hp": 0,
-            "lvl": 0,
-            "energy": 5,
-            "state": "none",
-            "captcha": False,
-            "mode": "stop",
-            "intox": False,
-            "target": "",
-            "mob_lvl": 1,
-            "mob_cls": "any",
-            "farm_loc": "",
-            "loc": "default",
-            "prof": "none",
-            "prof_loc": "",
-            "edem": False,
-            "multitool": False,
-            "cosmos": False,
-            "stats": {
-                "class": "none",
-                "atk": 1,
-                "def": 1,
-                "ddg": 0,
-                "crit": 0,
-                "acc": 0,
-                "spd": 0
-            }
-        }
+        with open(f'{root_dir}/configs/template_hero.json', encoding='utf-8') as json_file:
+            raw = json.load(json_file)
     if file == 'config':
         file_name = f'{root_dir}/configs/tg_API.json'
         raw = {

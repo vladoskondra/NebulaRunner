@@ -21,9 +21,11 @@ async def user_handler(event):
                                         '(указать через пробел полное название локации из игры вместе с эмодзи '
                                         'или "БукваЧисло"-названия планеты для космоса)\n'
                                         '.prof_loc — указать через пробел профессию добычи ресурсов: трава, камень, лес, рыба\n'
+                                        '.prof_rare on/off — включить/выключить добычу редких событий профы\n'
                                         '.edem on/off — включить/выключить фарм в Эдеме (это не замена режиму .farm или .boost)\n'
                                         '.multitool on/off — включить/выключить добычу ресурсов мультитулом\n'
                                         '.cosmos on/off — включить/выключить фарм в космосе (это не замена режиму .farm или .boost)\n'
+                                        '.cosmos_mode — переключатель режима фарма в космосе\n'
                                         '.captcha on/off — включить/выключить автопрохождение капчи')
     if text == '.stop' or text == '.farm' or text == '.dg' or text == '.boost' or text == '.peh':
         hero['mode'] = text.split('.')[1]
@@ -33,70 +35,65 @@ async def user_handler(event):
             hero['state'] = 'none'
             hero['loc'] = 'default'
         const["msg_status"] = await client.send_message('me', const['orig_msg_status'])
-        if hero['farm_loc'] == 'none':
-            msg_to_del = await client.send_message('me',
-                                                   f'Не указана локация для фарма, используй "`.farm_loc` " '
-                                                   f'и название, чтоб выставить локацию')
-            await asyncio.sleep(60)
-            await client.delete_messages('me', msg_to_del)
-        if hero['prof_loc'] == 'none':
-            msg_to_del = await client.send_message('me',
-                                                   f'Не указана локация для профы, используй "`.prof_loc` " '
-                                                   f'и вид добычи (лес, трава, рыба или камень)')
-            await asyncio.sleep(60)
-            await client.delete_messages('me', msg_to_del)
-        if hero['mob_lvl'] == 1 or hero['mob_cls'] not in ['warrior', 'ranger', 'mage']:
-            msg_to_del = await client.send_message('me',
-                                                   f'Не указан моб для фарма! Чтобы указать, используй "`.mobs lvl cls`",'
-                                                   f' где __lvl__ — числовой уровень моба, а __cls__ — его класс '
-                                                   f'(w - Воин, r - Лучник, m - Маг)')
-            await asyncio.sleep(60)
-            await client.delete_messages('me', msg_to_del)
+        if hero['mode'] in ['farm', 'boost']:
+            if hero['space']['cosmos']:
+                await client.send_message(const['game'], '🗺 Исследовать')
+            if hero['farm_cfg']['farm_loc'] == 'none' and not hero['space']['cosmos']:
+                msg_to_del = await client.send_message('me',
+                                                       f'Не указана локация для фарма, используй "`.farm_loc` " '
+                                                       f'и название, чтоб выставить локацию')
+                await asyncio.sleep(60)
+                await client.delete_messages('me', msg_to_del)
+            if hero['prof_cfg']['prof_loc'] == 'none':
+                msg_to_del = await client.send_message('me',
+                                                       f'Не указана локация для профы, используй "`.prof_loc` " '
+                                                       f'и вид добычи (лес, трава, рыба или камень)')
+                await asyncio.sleep(60)
+                await client.delete_messages('me', msg_to_del)
+            if hero['farm_cfg']['mob_lvl'] == 1 or hero['farm_cfg']['mob_cls'] not in ['warrior', 'ranger', 'mage']:
+                msg_to_del = await client.send_message('me',
+                                                       f'Не указан моб для фарма! Чтобы указать, используй "`.mobs lvl cls`",'
+                                                       f' где __lvl__ — числовой уровень моба, а __cls__ — его класс '
+                                                       f'(w - Воин, r - Лучник, m - Маг)')
+                await asyncio.sleep(60)
+                await client.delete_messages('me', msg_to_del)
     if '.edem ' in text:
         if text == '.edem on':
-            hero['edem'] = True
+            hero["general_cfg"]['edem'] = True
             await event.reply('Включен Эдем')
+            await reformat_prof_loc()
         elif text == '.edem off':
-            hero['edem'] = False
+            hero["general_cfg"]['edem'] = False
             await event.reply('Выключен Эдем')
+            await reformat_prof_loc()
     if '.farm_loc ' in text:
-        hero['farm_loc'] = text.split('farm_loc ')[1]
-        await event.reply(f'Локация для фарма: **{hero["farm_loc"]}**')
+        hero["farm_cfg"]['farm_loc'] = text.split('farm_loc ')[1]
+        await event.reply(f'Локация для фарма: **{hero["farm_cfg"]["farm_loc"]}**')
     if '.prof_loc ' in text:
         prof = text.split('prof_loc ')[1]
-        hero['prof'] = prof
-        if prof == 'рыба':
-            if not hero['edem']:
-                hero['prof_loc'] = '🏝 Побережье Карха'
-            else:
-                hero['prof_loc'] = '🌉 Дистрикт Вайресс'
-        elif prof == 'лес' or prof == 'трава':
-            if not hero['edem']:
-                hero['prof_loc'] = '🌳 Лес Предтеч'
-            else:
-                if prof == 'лес':
-                    hero['prof_loc'] = '🌃 Дистрикт Аппалачи'
-                elif prof == 'трава':
-                    hero['prof_loc'] = '🌇 Дистрикт Древних'
-        elif prof == 'камень':
-            if not hero['edem']:
-                hero['prof_loc'] = '🧊 Кварцевое Плато'
-            else:
-                hero['prof_loc'] = '🌃 Дистрикт Аппалачи'
-        await event.reply(f'Локация для фарма профессии {hero["prof"]}: **{hero["prof_loc"]}**')
+        hero["prof_cfg"]['prof'] = prof
+        await reformat_prof_loc()
+        await event.reply(f'Локация для фарма профессии {hero["prof_cfg"]["prof"]}: **{hero["prof_cfg"]["prof_loc"]}**')
     if '.multitool ' in text:
         if text == '.multitool on':
-            hero['multitool'] = True
+            hero['prof_cfg']['multitool'] = True
             await event.reply('Включен 🔫Мультитул')
         elif text == '.multitool off':
-            hero['multitool'] = False
+            hero['prof_cfg']['multitool'] = False
             await event.reply('Выключен 🔫Мультитул')
+    if '.prof_rare ' in text:
+        if text == '.prof_rare on':
+            hero["prof_cfg"]['catch_rare'] = True
+            await event.reply('Включена добыча редких событий')
+        elif text == '.prof_rare off':
+            hero["prof_cfg"]['catch_rare'] = False
+            await event.reply('Выключена добыча редких событий')
     if '.captcha ' in text:
         if text == '.captcha on':
-            hero['captcha'] = True
+            hero["general_cfg"]['captcha'] = True
             await event.reply('Включен автопроход капчи')
         elif text == '.captcha off':
-            hero['captcha'] = False
+            hero["general_cfg"]['captcha'] = False
             await event.reply('Выключен автопроход капчи')
     if '.mobs ' in text:
         if len(text.split(' ')) == 3:
@@ -105,12 +102,12 @@ async def user_handler(event):
                 mob_cls_raw = text.split(' ')[2]
                 if mob_cls_raw in ['w', 'r', 'm']:
                     if mob_cls_raw == 'w':
-                        hero['mob_cls'] = 'warrior'
+                        hero["farm_cfg"]['mob_cls'] = 'warrior'
                     elif mob_cls_raw == 'r':
-                        hero['mob_cls'] = 'ranger'
+                        hero["farm_cfg"]['mob_cls'] = 'ranger'
                     elif mob_cls_raw == 'm':
-                        hero['mob_cls'] = 'mage'
-                    hero['mob_lvl'] = mob_lvl
+                        hero["farm_cfg"]['mob_cls'] = 'mage'
+                    hero["farm_cfg"]['mob_lvl'] = mob_lvl
                     await event.reply(f'Выбран {mob_lvl} уровень моба для фарма')
                 else:
                     await event.reply(f'Неверно указан класс моба. Используй команду "`.mobs {mob_lvl} cls`", '
@@ -125,8 +122,55 @@ async def user_handler(event):
                               'Используй команду "`.mobs lvl`" или "`.mobs lvl cls`", '
                               'где __lvl__ — уровень моба для фарма, '
                               'а __cls__ — класс моба (w - Воин, r - Лучник, m - Маг)')
+    if '.cosmos ' in text:
+        if text == '.cosmos on':
+            hero["space"]['cosmos'] = True
+            await event.reply('Включен космос')
+            await reformat_prof_loc()
+        elif text == '.cosmos off':
+            hero["space"]['cosmos'] = False
+            await event.reply('Выключен космос')
+            await reformat_prof_loc()
+    if text.lower() == '.cosmos_mode':
+        if hero["space"]['cosmos_farm_seek']:
+            hero["space"]['cosmos_farm_seek'] = False
+            await event.reply('Режим фарма в космосе: **Ожидание воскрешения моба**')
+        else:
+            hero["space"]['cosmos_farm_seek'] = True
+            await event.reply('Режим фарма в космосе: **Бег между живыми мобами**')
     if text.startswith('⚔️ '):
         pin = text.split('\n')[0].split(' ')[1]
         point = await get_peh_point(pin.lower())
         print(point)
     update_file('hero', hero)
+
+
+async def reformat_prof_loc():
+    prof = hero["prof_cfg"]['prof']
+    if prof == 'рыба':
+        if hero["space"]['cosmos']:
+            hero["prof_cfg"]['prof_loc'] = '🍤'
+        elif not hero["general_cfg"]['edem']:
+            hero["prof_cfg"]['prof_loc'] = '🏝 Побережье Карха'
+        else:
+            hero["prof_cfg"]['prof_loc'] = '🌉 Дистрикт Вайресс'
+    elif prof == 'лес' or prof == 'трава':
+        if hero["space"]['cosmos']:
+            if prof == 'лес':
+                hero["prof_cfg"]['prof_loc'] = '🌴'
+            elif prof == 'трава':
+                hero["prof_cfg"]['prof_loc'] = '🍃'
+        elif not hero["general_cfg"]['edem']:
+            hero["prof_cfg"]['prof_loc'] = '🌳 Лес Предтеч'
+        else:
+            if prof == 'лес':
+                hero["prof_cfg"]['prof_loc'] = '🌃 Дистрикт Аппалачи'
+            elif prof == 'трава':
+                hero["prof_cfg"]['prof_loc'] = '🌇 Дистрикт Древних'
+    elif prof == 'камень':
+        if hero["space"]['cosmos']:
+            hero["prof_cfg"]['prof_loc'] = '🗿'
+        elif not hero["general_cfg"]['edem']:
+            hero["prof_cfg"]['prof_loc'] = '🧊 Кварцевое Плато'
+        else:
+            hero["prof_cfg"]['prof_loc'] = '🌃 Дистрикт Аппалачи'

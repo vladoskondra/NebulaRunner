@@ -11,6 +11,7 @@ from modules.game.dungeon import dungeon_handler
 from modules.game.energy_update import energy_full, energy_plus
 from modules.peh.peh import peh_runner
 from modules.game.hero_handler import update_hero_from_game
+from modules.cosmos.cosmos_handler import cosmos
 
 
 full_energy_list = ['🌏 Сервер был перезапущен.\n\n⚡️ Энергия восполнена',
@@ -26,6 +27,7 @@ async def game_handler(event):
     now = datetime.now()
     time_handler.get_day_or_night(now)
     time_handler.is_prof_time(now)
+    # print(event)
     if not text.startswith('👥 '):
         # CAPTCHA TO SOLVE
         if 'Дла этого нажмите на' in text:
@@ -41,16 +43,24 @@ async def game_handler(event):
         if '🧬 Cимуляция №: ' in text or all(x in text for x in ['🧬: ', '📟: /profilesize']):
             await update_hero_from_game(text)
         # INTOX REFRESH
-        if 'Интоксикация восстановлена!' in text and hero['intox'] is True:
-            hero['intox'] = False
+        if 'Интоксикация восстановлена!' in text and hero["hero"]['intox'] is True:
+            hero["hero"]['intox'] = False
         # ENERGY UPDATE
         elif any(fel in text for fel in full_energy_list):
             await energy_full(text)
         elif '⚡️ +1 к энергии' in text:
             await energy_plus(text)
+        if 'Вы прибыли ' in text:
+            if 'Новый Эдем' in text:
+                hero['cur_loc'] = '🌎 Новый Эдем'
+            if 'Некрополис' in text:
+                hero['cur_loc'] = '🏛 Некрополис'
         # GRIND MODE
         if hero['mode'] == 'farm' or hero['mode'] == 'boost':
-            await mob_farm(event)
+            if hero["space"]['cosmos']:
+                await cosmos(event)
+            else:
+                await mob_farm(event)
         # PEH MODE
         elif hero['mode'] == 'peh':
             await peh_runner(text)
