@@ -96,9 +96,11 @@ async def seek_mob(text, target_mob, my_pos):
             dir_i = 0
             while not isEmoji:
                 possible_dirs = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
-                path = dijkstra(planet_map, my_pos, tuple(map(lambda i, j: i + j, my_pos, possible_dirs[dir_i])))
-                if not path:
+                while not path:
                     dir_i += 1
+                    path = dijkstra(planet_map, my_pos, tuple(map(lambda i, j: i + j, my_pos, possible_dirs[dir_i])))
+                path = dijkstra(planet_map, my_pos, tuple(map(lambda i, j: i + j, my_pos, possible_dirs[dir_i])))
+                print(f'Lurking around: {path}')
                 await client.send_message(const['game'], path[0])
                 await asyncio.sleep(1)
                 new_msg = await client.get_messages(const['game'], ids=const['space_map_msg'])

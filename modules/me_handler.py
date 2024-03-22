@@ -158,10 +158,10 @@ async def user_handler(event):
     if '.all_mobs ' in text:
         if text == '.all_mobs on':
             hero["farm_cfg"]['any_lvls'] = True
-            await event.reply(f'{EMOJI_ON} Включен обязательный отхил')
+            await event.reply(f'{EMOJI_ON} Включен фарм всех возможных уровней мобов на планете')
         elif text == '.all_mobs off':
             hero["farm_cfg"]['any_lvls'] = False
-            await event.reply(f'{EMOJI_OFF} Выключен обязательный отхил')
+            await event.reply(f'{EMOJI_OFF} Выключен фарм всех уровней, фармлю лишь {hero["farm_cfg"]["mob_lvl"]}')
     if text.startswith('⚔️ '):
         pin = text.split('\n')[0].split(' ')[1]
         point = await get_peh_point(pin.lower())
