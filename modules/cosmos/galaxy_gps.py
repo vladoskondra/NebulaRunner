@@ -1,5 +1,6 @@
 from modules.cosmos.galaxy_PathFinder import pathFinder
 from modules.starter.starter import hero
+from modules.game.fight_sim import fight_simulation
 
 tiles_index = [
     {'seq': 'A0', 'name': 'Орион', 'mobs': [1, 30]}, {'seq': 'A1', 'name': '', 'mobs': [-1, -1]},
@@ -105,10 +106,20 @@ def get_planet_seq(planet_name):
     return planet_seq
 
 
-def mob_emoji():
+async def mob_emoji():
     cur_planet = next(seq for seq in tiles_index if seq['seq'] == hero["space"]['space_seq'])
-    target_mob = hero["farm_cfg"]['mob_lvl']
     emoji_list = ['🐺', '🐙', '🐍', '🦑']
-    # print(list(range(cur_planet['mobs'][0], cur_planet['mobs'][1] + 1)))
-    index = list(range(cur_planet['mobs'][0], cur_planet['mobs'][1] + 1)).index(target_mob)
-    return emoji_list[index]
+    search_emoji = []
+    all_mobs = list(range(cur_planet['mobs'][0], cur_planet['mobs'][1] + 1))
+    if hero['farm_cfg']['any_lvls']:
+        for am in all_mobs:
+            win_chance = await fight_simulation(optional_mob=am)
+            if win_chance >= 100:
+                index = all_mobs.index(am)
+                search_emoji.append(emoji_list[index])
+    else:
+        target_mob = hero["farm_cfg"]['mob_lvl']
+        # print(list(range(cur_planet['mobs'][0], cur_planet['mobs'][1] + 1)))
+        index = all_mobs.index(target_mob)
+        search_emoji.append(emoji_list[index])
+    return search_emoji

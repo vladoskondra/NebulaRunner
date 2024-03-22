@@ -71,13 +71,12 @@ async def seek_prof(text, target_mob, my_pos):
             isEmoji = False
             path = []
             new_msg = ''
+            dir_i = 0
             while not isEmoji:
-                path = []
-                i = -1
-                while not path:
-                    i += 1
-                    possible_dirs = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
-                    path = dijkstra(planet_map, my_pos, tuple(map(lambda i, j: i + j, my_pos, possible_dirs[i])))
+                possible_dirs = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
+                path = dijkstra(planet_map, my_pos, tuple(map(lambda i, j: i + j, my_pos, possible_dirs[dir_i])))
+                if not path:
+                    dir_i += 1
                 await client.send_message(const['game'], path[0])
                 await asyncio.sleep(1)
                 new_msg = await client.get_messages(const['game'], ids=const['space_map_msg'])

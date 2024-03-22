@@ -5,28 +5,37 @@ from modules.peh.peh import get_peh_point
 from modules.utils.files import update_file
 
 
+EMOJI_ON = '✅'
+EMOJI_OFF = '❌'
+
+
 @events.register(events.NewMessage(chats='me', from_users='me'))
 async def user_handler(event):
     message = event.message.to_dict()
     text = message['message']
     if text.lower() == '.help':
         await client.send_message('me', 'Доступные команды:\n\n'
-                                        '.mobs lvl cls — указать уровень моба для фарма, где __lvl__ — числовой уровень моба,'
-                                        ' а __cls__ — его класс (w - Воин, r - Лучник, m - Маг)\n'
-                                        '.farm — режим обычного гринда мобов\n'
-                                        '.boost — режим гринда с банками\n'
-                                        '.peh — режим перемещения на ПЕХе (перед включением необходимо долететь до Островов)\n'
-                                        '.stop — поставить бота на паузу\n'
-                                        '.farm_loc — указать локацию для фарма '
-                                        '(указать через пробел полное название локации из игры вместе с эмодзи '
-                                        'или "БукваЧисло"-названия планеты для космоса)\n'
-                                        '.prof_loc — указать через пробел профессию добычи ресурсов: трава, камень, лес, рыба\n'
-                                        '.prof_rare on/off — включить/выключить добычу редких событий профы\n'
-                                        '.edem on/off — включить/выключить фарм в Эдеме (это не замена режиму .farm или .boost)\n'
-                                        '.multitool on/off — включить/выключить добычу ресурсов мультитулом\n'
-                                        '.cosmos on/off — включить/выключить фарм в космосе (это не замена режиму .farm или .boost)\n'
-                                        '.cosmos_mode — переключатель режима фарма в космосе\n'
-                                        '.captcha on/off — включить/выключить автопрохождение капчи')
+                                        '**===== РЕЖИМЫ =====**\n'
+                                        '• `.farm` — режим обычного гринда мобов\n'
+                                        '• `.boost` — режим гринда с банками\n'
+                                        '• `.peh` — режим перемещения на ПЕХе (перед включением необходимо долететь до Островов)\n'
+                                        '• `.stop` — поставить бота на паузу\n'
+                                        '• `.captcha on/off` — включить/выключить автопрохождение капчи\n\n'
+                                        '**===== ГРИНД =====**\n'
+                                        '• `.mobs LVL CLS` — указать уровень __(LVL)__ и класс __(CLS)__ моба для фарма\n'
+                                        '• `.farm_loc LOC` — указать локацию __(LOC)__ для фарма\n(например, `.farm_loc ⛰ Ущелье Дриад`)\n'
+                                        '• `.all_mobs on/off` — фармить все возможные уровни мобов на планете\n'
+                                        '• `.must_heal on/off` — обязательный отхил у корабля\n\n'
+                                        '**===== ПРОФА =====**\n'
+                                        '• `.prof RES` — указать через пробел профессию добычи ресурсов __(RES)__: трава, камень, лес, рыба\n'
+                                        '• `.prof_rare on/off` — включить/выключить добычу редких событий профы\n'
+                                        '• `.multitool on/off` — включить/выключить добычу ресурсов мультитулом\n\n'
+                                        '**===== ЭТАПЫ =====**\n'
+                                        '• `.edem on/off` — включи, если ты в Эдеме\n'
+                                        '• `.cosmos on/off` — включит, если ты в космосе)\n\n'
+                                        '**===== КОСМОС =====**\n'
+                                        '• `.cosmos_mode` — переключатель режима фарма в космосе')
+
     if text == '.stop' or text == '.farm' or text == '.dg' or text == '.boost' or text == '.peh':
         hero['mode'] = text.split('.')[1]
         const['orig_msg_status'] = f'Включен режим **{hero["mode"]}**'
@@ -60,41 +69,41 @@ async def user_handler(event):
     if '.edem ' in text:
         if text == '.edem on':
             hero["general_cfg"]['edem'] = True
-            await event.reply('Включен Эдем')
+            await event.reply(f'{EMOJI_ON} Включен Эдем')
             await reformat_prof_loc()
         elif text == '.edem off':
             hero["general_cfg"]['edem'] = False
-            await event.reply('Выключен Эдем')
+            await event.reply(f'{EMOJI_OFF} Выключен Эдем')
             await reformat_prof_loc()
     if '.farm_loc ' in text:
         hero["farm_cfg"]['farm_loc'] = text.split('farm_loc ')[1]
         await event.reply(f'Локация для фарма: **{hero["farm_cfg"]["farm_loc"]}**')
-    if '.prof_loc ' in text:
-        prof = text.split('prof_loc ')[1]
+    if '.prof ' in text:
+        prof = text.split('prof ')[1]
         hero["prof_cfg"]['prof'] = prof
         await reformat_prof_loc()
         await event.reply(f'Локация для фарма профессии {hero["prof_cfg"]["prof"]}: **{hero["prof_cfg"]["prof_loc"]}**')
     if '.multitool ' in text:
         if text == '.multitool on':
             hero['prof_cfg']['multitool'] = True
-            await event.reply('Включен 🔫Мультитул')
+            await event.reply(f'{EMOJI_ON} Включен 🔫Мультитул')
         elif text == '.multitool off':
             hero['prof_cfg']['multitool'] = False
-            await event.reply('Выключен 🔫Мультитул')
+            await event.reply(f'{EMOJI_OFF} Выключен 🔫Мультитул')
     if '.prof_rare ' in text:
         if text == '.prof_rare on':
             hero["prof_cfg"]['catch_rare'] = True
-            await event.reply('Включена добыча редких событий')
+            await event.reply(f'{EMOJI_ON} Включена добыча редких событий')
         elif text == '.prof_rare off':
             hero["prof_cfg"]['catch_rare'] = False
-            await event.reply('Выключена добыча редких событий')
+            await event.reply(f'{EMOJI_OFF} Выключена добыча редких событий')
     if '.captcha ' in text:
         if text == '.captcha on':
             hero["general_cfg"]['captcha'] = True
-            await event.reply('Включен автопроход капчи')
+            await event.reply(f'{EMOJI_ON} Включен автопроход капчи')
         elif text == '.captcha off':
             hero["general_cfg"]['captcha'] = False
-            await event.reply('Выключен автопроход капчи')
+            await event.reply(f'{EMOJI_OFF} Выключен автопроход капчи')
     if '.mobs ' in text:
         if len(text.split(' ')) == 3:
             try:
@@ -125,11 +134,11 @@ async def user_handler(event):
     if '.cosmos ' in text:
         if text == '.cosmos on':
             hero["space"]['cosmos'] = True
-            await event.reply('Включен космос')
+            await event.reply(f'{EMOJI_ON} Включен космос')
             await reformat_prof_loc()
         elif text == '.cosmos off':
             hero["space"]['cosmos'] = False
-            await event.reply('Выключен космос')
+            await event.reply(f'{EMOJI_OFF} Выключен космос')
             await reformat_prof_loc()
     if text.lower() == '.cosmos_mode':
         if hero["space"]['cosmos_farm_seek']:
@@ -138,6 +147,20 @@ async def user_handler(event):
         else:
             hero["space"]['cosmos_farm_seek'] = True
             await event.reply('Режим фарма в космосе: **Бег между живыми мобами**')
+    if '.must_heal ' in text:
+        if text == '.must_heal on':
+            hero["farm_cfg"]['force_heal'] = True
+            await event.reply(f'{EMOJI_ON} Включен обязательный отхил')
+        elif text == '.must_heal off':
+            hero["farm_cfg"]['force_heal'] = False
+            await event.reply(f'{EMOJI_OFF} Выключен обязательный отхил')
+    if '.all_mobs ' in text:
+        if text == '.all_mobs on':
+            hero["farm_cfg"]['any_lvls'] = True
+            await event.reply(f'{EMOJI_ON} Включен обязательный отхил')
+        elif text == '.all_mobs off':
+            hero["farm_cfg"]['any_lvls'] = False
+            await event.reply(f'{EMOJI_OFF} Выключен обязательный отхил')
     if text.startswith('⚔️ '):
         pin = text.split('\n')[0].split(' ')[1]
         point = await get_peh_point(pin.lower())

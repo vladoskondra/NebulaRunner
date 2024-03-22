@@ -10,7 +10,7 @@ class MIN_DD_CLASS(enum.Enum):
     mage = 0.03
 
 
-async def fight_simulation():
+async def fight_simulation(optional_mob=0):
     player_obj = {
         'name': 'hero',
         'class': hero['hero']['class'],
@@ -27,7 +27,10 @@ async def fight_simulation():
     mob_cls = 'any'
     if hero["farm_cfg"]['mob_cls'] != 'any':
         mob_cls = hero["farm_cfg"]['mob_cls']
-    mob = get_mob(hero["farm_cfg"]['mob_lvl'], cls=mob_cls)
+    if optional_mob == 0:
+        mob = get_mob(hero["farm_cfg"]['mob_lvl'], cls=mob_cls)
+    else:
+        mob = get_mob(optional_mob, cls=mob_cls)
     enemy_obj = {
         'name': 'mob',
         'class': mob['monsterType'].lower(),

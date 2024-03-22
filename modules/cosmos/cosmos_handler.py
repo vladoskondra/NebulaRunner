@@ -98,7 +98,7 @@ async def cosmos(event):
         hero['cur_loc'] = planet_name
         planet_seq = get_planet_seq(planet_name)
         hero['space']['space_seq'] = planet_seq
-        hero['state'] = 'map seeker'
+        # hero['state'] = 'map seeker'
     if '🛰️ Вы направляетесь в сектор ' in text:
         hero["space"]['space_seq'] = text.split(' в сектор ')[1].split('.')[0]
     if '🛰 Вы на орбите планеты ' in text and hero['state'] == 'landing':
@@ -106,6 +106,10 @@ async def cosmos(event):
         await event.click(text='🌏 Посадка')
     if '🌏 Вы приземлились на планету ' in text:
         hero['cur_loc'] = text.split('🌏 Вы приземлились на планету ')[1].split('.')[0]
+        hero['state'] = 'map seeker'
+        await asyncio.sleep(randint(1, 3))
+        await event.click(text='🗺 Исследовать')
+    if '⚡️ +1 к энергии (4/5)!' in text:
         hero['state'] = 'map seeker'
         await asyncio.sleep(randint(1, 3))
         await event.click(text='🗺 Исследовать')
@@ -166,7 +170,7 @@ async def cosmos(event):
             elif hero['state'] == 'map seeker':
                 win_chance = await fight_simulation()
                 if hero["hero"]['energy'] > 0:
-                    if win_chance >= 99.5:
+                    if win_chance >= 100:
                         target = await seek_mob(text, target, my_pos)
                     else:
                         hero['state'] = 'back to ship'
@@ -175,7 +179,7 @@ async def cosmos(event):
                             text = new_msg.message
                             target = await seek_ship(text, target, my_pos)
                 elif hero["hero"]['energy'] == 0 and hero['mode'] == 'boost' and hero["hero"]['intox'] is False:
-                    if win_chance >= 99.5:
+                    if win_chance >= 100:
                         await asyncio.sleep(randint(2, 7))
                         await client.send_message(const["game"], '/potions')
                         await asyncio.sleep(randint(2, 7))
@@ -204,18 +208,22 @@ async def cosmos(event):
                 await client.send_message(const['game'], '🚀⚔️🏔️')
     if '🧬 Ваше здоровье: ' in text and '🕹 Выберите действие?' in text and hero['state'] == 'ready to action':
         hero["hero"]['cur_hp'] = int(text.replace('💔', '').replace('❤️', '').split('🧬 Ваше здоровье: ')[1].split('/')[0])
-        win_chance = await fight_simulation()
         await asyncio.sleep(randint(1, 3))
-        if win_chance >= 99.5 and hero["hero"]['energy'] > 0:
-            print(f'Can still fight with chance of {win_chance}')
-            try:
-                await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Готов бить, шанс на успех: {win_chance}")
-            except:
-                print('cant edit message text')
-            hero['state'] = 'starts fight'
-            await event.click(0)
-        elif win_chance >= 99.5 and hero["hero"]['energy'] == 0 and hero['mode'] == 'boost' and not hero["hero"]['intox']:
-            await client.send_message(const["game"], '/potions')
+        if hero["hero"]['cur_hp'] < hero['hero']['max_hp'] and hero['farm_cfg']['force_heal'] and hero['space']['cosmos']:
+            hero['state'] = 'back to ship'
+            await client.send_message(const['game'], '🗺 Исследовать')
+        else:
+            win_chance = await fight_simulation()
+            if win_chance >= 100 and hero["hero"]['energy'] > 0:
+                print(f'Can still fight with chance of {win_chance}')
+                try:
+                    await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Готов бить, шанс на успех: {win_chance}")
+                except:
+                    print('cant edit message text')
+                hero['state'] = 'starts fight'
+                await event.click(0)
+            elif win_chance >= 99.5 and hero["hero"]['energy'] == 0 and hero['mode'] == 'boost' and not hero["hero"]['intox']:
+                await client.send_message(const["game"], '/potions')
     if 'Вы вступаете в бой с:' in text:
         hero['state'] = 'after fight'
         print(f'going to AFTER FARM, status cur: {hero["state"]}')

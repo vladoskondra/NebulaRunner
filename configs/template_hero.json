@@ -25,9 +25,11 @@
     "edem": false
   },
   "farm_cfg": {
+    "any_lvls": false,
     "farm_loc": "none",
     "mob_lvl": 0,
-    "mob_cls": ""
+    "mob_cls": "",
+    "force_heal": true
   },
   "prof_cfg": {
     "prof": "none",
