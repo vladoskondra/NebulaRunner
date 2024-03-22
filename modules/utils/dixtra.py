@@ -5,8 +5,7 @@ def dijkstra(graph, start, end):
     print(f'Start: {start}\nEnd: {end}')
     distances = {vertex: float('infinity') for vertex in graph}
     distances[start] = 0
-    previous_vertices = {vertex: None for vertex in graph}  # Словарь для хранения предыдущих вершин в пути
-
+    previous_vertices = {vertex: None for vertex in graph}
     priority_queue = [(0, start)]
 
     while priority_queue:
@@ -22,10 +21,9 @@ def dijkstra(graph, start, end):
             distance = current_distance + 1
             if distance < distances[neighbor]:
                 distances[neighbor] = distance
-                previous_vertices[neighbor] = current_vertex  # Сохраняем текущую вершину как предыдущую для соседа
+                previous_vertices[neighbor] = current_vertex
                 heapq.heappush(priority_queue, (distance, neighbor))
 
-    # Восстанавливаем путь
     path = []
     current_vertex = end
     while previous_vertices[current_vertex] is not None:
@@ -35,7 +33,7 @@ def dijkstra(graph, start, end):
                 path.append(direction)
                 break
         current_vertex = previous_vertex
-    path.reverse()  # Инвертируем путь, чтобы он шел от начала к концу
+    path.reverse()
 
     path_dirs = []
     for p in path:
