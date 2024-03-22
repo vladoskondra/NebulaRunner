@@ -27,6 +27,7 @@ async def cosmos(event):
         buttons = message.reply_markup
     if any(fel in text for fel in full_energy_list):
         await asyncio.sleep(randint(1, 3))
+        hero['state'] = 'map seeker'
         await client.send_message(const['game'], '🗺 Исследовать')
     if '⚠️ В импульсном двигателе нет топлива' in text:
         await asyncio.sleep(randint(1, 3))
