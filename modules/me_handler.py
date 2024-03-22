@@ -46,6 +46,7 @@ async def user_handler(event):
         const["msg_status"] = await client.send_message('me', const['orig_msg_status'])
         if hero['mode'] in ['farm', 'boost']:
             if hero['space']['cosmos']:
+                hero['state'] = 'map seeker'
                 await client.send_message(const['game'], '🗺 Исследовать')
             if hero['farm_cfg']['farm_loc'] == 'none' and not hero['space']['cosmos']:
                 msg_to_del = await client.send_message('me',
