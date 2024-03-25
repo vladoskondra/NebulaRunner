@@ -45,12 +45,13 @@ async def get_peh_point(text):
 
 @events.register(events.NewMessage(from_users='NebulaHelperBot'))
 async def peh_handler(event):
-    message = event.message.to_dict()
-    text = message['message']
-    if text.startswith('⚔️ '):
-        pin = text.split('\n')[0].split(' ')[1]
-        const["pin_point"] = await get_peh_point(pin.lower())
-        await update_peh_list()
+    if hero['mode'] == 'peh':
+        message = event.message.to_dict()
+        text = message['message']
+        if text.startswith('⚔️ '):
+            pin = text.split('\n')[0].split(' ')[1]
+            const["pin_point"] = await get_peh_point(pin.lower())
+            await update_peh_list()
 
 
 async def update_peh_list():

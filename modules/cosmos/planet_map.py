@@ -4,7 +4,7 @@ from modules.starter.starter import hero
 async def create_planet_map(map_list):
     map_dict = {}
     map_limit = (hero["space"]['planet_size']-1, hero["space"]['planet_size']-1)
-    barriers = ['🟦', '🏔']
+    barriers = ['🟦', '🏔', '❄', '🟧']
     # print(map_limit)
     for h in range(len(map_list)):
         # print(len(map_list[h]))
@@ -61,3 +61,13 @@ async def create_planet_map(map_list):
                                 'NE': dir_NE, 'NW': dir_NW, 'SE': dir_SE, 'SW': dir_SW}
     # print(map_dict)
     return map_dict
+
+
+async def make_map_list(text):
+    map_list = []
+    map_text = text.split('/mapSize /mType /cruiseOn\n\n')[1]
+    text_rows = map_text.split('\n')
+    for row in text_rows:
+        map_row = [i for i in [*row] if i != '️']
+        map_list.append(map_row)
+    return map_list

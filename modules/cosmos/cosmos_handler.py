@@ -110,15 +110,19 @@ async def cosmos(event):
         hero['state'] = 'map seeker'
         await asyncio.sleep(randint(1, 3))
         await event.click(text='🗺 Исследовать')
-    if '⚡️ +1 к энергии (4/5)!' in text:
+    if '+1 к энергии (4/5)' in text:
         hero['state'] = 'map seeker'
         await asyncio.sleep(randint(1, 3))
         await event.click(text='🗺 Исследовать')
-    if '🌬 Система Жизнеобеспечения:\n- Уровень заряда модуля экзоскелета достиг значения 20 или ниже. ' \
-       'Используйте топливо или замените модуль, чтобы избежать недостатка кислорода и смерти от асфиксии.' in text:
+    if ('🌐 Защита От Вредных Факторов:\n' in text or '🌬 Система Жизнеобеспечения:\n' in text) \
+            and '- Уровень заряда модуля экзоскелета достиг значения 20 или ниже. ' \
+                'Используйте топливо или замените модуль, чтобы избежать ' in text:
         await asyncio.sleep(randint(1, 3))
-        await client.send_message(const['game'], '/fuel_oxy')
-    if '🌬 Вы можете пополнить заряд' in text:
+        if '🌬 Система Жизнеобеспечения:\n' in text:
+            await client.send_message(const['game'], '/fuel_oxy')
+        elif '🌐 Защита От Вредных Факторов:\n' in text:
+            await client.send_message(const['game'], '/fuel_def')
+    if 'Вы можете пополнить заряд' in text:
         await asyncio.sleep(randint(1, 3))
         buttons_list = []
         buttons_rows = message.reply_markup.rows
@@ -133,7 +137,15 @@ async def cosmos(event):
             await event.click(text=buttons_list[0])
         else:
             hero['mode'] = 'stop'
-            await client.send_message('me', '🌬 Закончился кислород. Бот поставлен на паузу.')
+            await client.send_message('me', '(🌬/🌐) Закончился кислород или защита. Бот поставлен на паузу.')
+    if ('🌐 Защита От Вредных Факторов:\n' in text or '🌬 Система Жизнеобеспечения:\n' in text) \
+            and '🚀 Система обнаружения угроз корабля ' in text \
+            and 'разряжена. Шлюз не был открыт, так как в противном случае Вы умрете' in text:
+        await asyncio.sleep(randint(1, 3))
+        if '🌬 Система Жизнеобеспечения:\n' in text:
+            await client.send_message(const['game'], '/fuel_oxy')
+        elif '🌐 Защита От Вредных Факторов:\n' in text:
+            await client.send_message(const['game'], '/fuel_def')
     # if '🚀 Система Исцеления корабля' in text and '- Началась регенерация здоровья' in text:
     #     hero['state'] = 'restore hp near ship'
     if '🚀 Система Исцеления корабля:\n- Регенерация здоровья завершена.' in text:
@@ -204,6 +216,10 @@ async def cosmos(event):
                 await asyncio.sleep(randint(3, 5))
                 await client.send_message(const['game'], '🗺 Исследовать')
             elif target == my_pos and hero['state'] != 'back to ship':
+                await asyncio.sleep(1)
+                new_msg = await client.get_messages(const['game'], ids=const['space_map_msg'])
+                text = new_msg.message
+
                 hero['state'] = 'ready to action'
                 await asyncio.sleep(1)
                 await client.send_message(const['game'], '🚀⚔️🏔️')
