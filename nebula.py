@@ -46,7 +46,7 @@ async def status():
                   f"**Обязательный хил:** {boolean_emojis(FARM_CFG['force_heal'])}\n\n" \
                   f"**===== ПРОФА =====**\n" \
                   f"**Ресурс:** {PROF_CFG['prof']}\n" \
-                  f"**Лока:** {FARM_CFG['prof_loc']}\n" \
+                  f"**Лока:** {PROF_CFG['prof_loc']}\n" \
                   f"**Ловить редкие:** {boolean_emojis(PROF_CFG['catch_rare'])}\n" \
                   f"**Мультитул:** {boolean_emojis(PROF_CFG['multitool'])}\n\n" \
                   f"**===== КОСМОС =====**\n" \
