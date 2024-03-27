@@ -247,5 +247,9 @@ async def cosmos(event):
     if '⏱️ Размер: ' in text and '🔫 Мультитул:' in text and '👥 Пилотов:' in text:
         await asyncio.sleep(1)
         await event.click(0)
+    if '⚠️ Ресурс истощен, расщепление остановлено' in text:
+        await asyncio.sleep(randint(1, 3))
+        hero['state'] = 'map seeker'
+        await client.send_message(const['game'], '🗺 Исследовать')
 
     update_file('hero', hero)
