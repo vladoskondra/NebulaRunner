@@ -2,7 +2,7 @@ import heapq
 
 
 def dijkstra(graph, start, end):
-    print(f'Start: {start}\nEnd: {end}')
+    # print(f'Start: {start}\nEnd: {end}')
     distances = {vertex: float('infinity') for vertex in graph}
     distances[start] = 0
     previous_vertices = {vertex: None for vertex in graph}
