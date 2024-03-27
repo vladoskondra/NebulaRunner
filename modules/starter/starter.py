@@ -14,7 +14,8 @@ const = {
     "day_or_night": 'day',
     "fish_timer": False,
     "peh_list": [],
-    "pin_point": ''
+    "pin_point": '',
+    "farm_received": False
 }
 
 config = read_file('config')

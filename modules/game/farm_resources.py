@@ -1,6 +1,7 @@
 import asyncio
 from random import randint
 from modules.starter.starter import client, hero, const
+from modules.utils.script_tools import change_status
 
 game = const['game']
 
@@ -53,5 +54,5 @@ async def farm_prof():
             await asyncio.sleep(randint(1, 4))
             await client.send_message(game, '🌱 Сбор растений')
             const["last_action"] = '🌱 Сбор растений'
-        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Добываю ресурсы")
+        await change_status("Добываю ресурсы")
         hero['state'] = 'prof'

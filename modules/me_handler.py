@@ -40,11 +40,21 @@ async def user_handler(event):
         hero['mode'] = text.split('.')[1]
         const['orig_msg_status'] = f'Включен режим **{hero["mode"]}**'
         if text.lower() == '.stop':
-            const['orig_msg_status'] = f'Бот остановлен'
+            received = const['farm_received']
+            stop_text = f'Бот остановлен\n\n' \
+                                       f'**Получено за сессию:**\n' \
+                                       f'**Опыт:** {received["exp"]}'
+            if received['items']:
+                stop_text += f"\n**Получено:**\n"
+                for item in received['items']:
+                    stop_text += f"• {item['name']} — [x{item['ctx']}]\n"
+            const['orig_msg_status'] = stop_text
+            const['farm_received'] = False
             hero['state'] = 'none'
             hero['loc'] = 'default'
         const["msg_status"] = await client.send_message('me', const['orig_msg_status'])
         if hero['mode'] in ['farm', 'boost']:
+            const['farm_received'] = {"exp": 0, "items": []}
             if hero['space']['cosmos']:
                 hero['state'] = 'map seeker'
                 await client.send_message(const['game'], '🗺 Исследовать')

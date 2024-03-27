@@ -32,7 +32,9 @@ async def seek_prof(text, target_mob, my_pos):
                             isPathFounded = True
                         else:
                             ship = await ship_coord(map_list)
-                            if not ship or math.dist(target_mob, ship[0]) >= 2:
+                            if ship:
+                                print(f"Distance between ship and target: {math.dist(target_mob, ship[0])}")
+                            if not ship or math.dist(target_mob, ship[0]) >= 2.5:
                                 del path[-1]
                             while path:
                                 await client.send_message(const['game'], path[0])

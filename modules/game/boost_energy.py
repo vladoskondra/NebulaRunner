@@ -2,6 +2,7 @@ import asyncio
 from random import randint
 from modules.starter.starter import client, hero, const
 from modules.game.movement import do_move
+from modules.utils.script_tools import change_status
 
 
 async def drink_energy(text):
@@ -12,7 +13,7 @@ async def drink_energy(text):
         hero["hero"]['intox'] = True
         print('going to farm prof')
         hero['state'] = 'going to prof'
-        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Иду на профу")
+        await change_status("Иду на профу")
         await asyncio.sleep(randint(2, 5))
         await client.send_message(const["game"], '🗺 Локации')
     if hero["hero"]['intox'] is False and 'Зелье Энергии' in text:
@@ -25,7 +26,7 @@ async def drink_energy(text):
             await client.send_message(const["game"], '/use_potion_4018')
         elif 'I Бракованное Зелье Энергии' in text:
             await client.send_message(const["game"], '/use_potion_4017')
-        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Ухожу из города")
+        await change_status("Ухожу из города")
         await asyncio.sleep(randint(2, 7))
         hero['state'] = 'going to farm'
         await do_move()
@@ -33,4 +34,4 @@ async def drink_energy(text):
         await client.send_message('me', 'Зелья энергии кончились, режим **boost** сменился на **farm**')
         hero['mode'] = 'farm'
     else:
-        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Интокс, жду энку")
+        await change_status("Интокс, жду энку")

@@ -88,8 +88,14 @@ async def seek_ship(text, target_mob, my_pos):
                 search_coord = (max_coord, max_coord/2)
             elif dir == '↘️':
                 search_coord = (max_coord, max_coord)
+            paths = []
+            for y in range(len(map_list)):
+                for x in range(len(map_list[y])):
+                    isPath = dijkstra(planet_map, my_pos, (y, x))
+                    if isPath:
+                        paths.append((y, x))
             # print(search_coord)
-            nearest_mob = min(found_ship, key=lambda x: math.dist(x, search_coord))
+            nearest_mob = min(paths, key=lambda x: math.dist(x, search_coord))
             # min_dif, res = 999999999, None
             # for i, val in enumerate(found_ship):
             #     dif = abs(search_coord[0] - val[0]) + abs(search_coord[1] - val[1])

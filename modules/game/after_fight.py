@@ -4,10 +4,25 @@ from random import randint
 from modules.starter.starter import client, hero, const
 from modules.game.fight_sim import fight_simulation
 from modules.utils.files import update_file
+from modules.utils.script_tools import change_status
 
 
 async def after_fight(text):
     hero["hero"]['energy'] = int(text.split('⚡️ Энергия: ')[1].split('/')[0])
+    if 'Полученный опыт 📖: ' in text:
+        const['farm_received']['exp'] += int(text.split('Полученный опыт 📖: ')[1].split('\n')[0].replace(' ', ''))
+    if '🎒 Получено (' in text:
+        items = text.split('🎒 Получено (')[1].split('):\n')[1].split('\n')
+        for it in items:
+            item_name = it.split('- ')[1]
+            if any(it_d['name'] == item_name for it_d in const['farm_received']['items']):
+                f_it = next(it_d for it_d in const['farm_received']['items'] if it_d['name'] == item_name)
+                it_index = const['farm_received']['items'].index(f_it)
+                const['farm_received']['items'][it_index]['ctx'] += 1
+            else:
+                const['farm_received']['items'].append({'name': item_name, 'ctx': 1})
+    if 'Потерянный опыт 📖: ' in text:
+        const['farm_received']['exp'] -= int(text.split('Потерянный опыт 📖: ')[1].split('\n')[0].replace(' ', ''))
     if 'Потерянный опыт' not in text:
         await asyncio.sleep(randint(2, 5))
         if f"{hero['hero']['name']}(❤️" in text:
@@ -22,24 +37,22 @@ async def after_fight(text):
             win_chance = await fight_simulation()
             if win_chance >= 100 and hero['hero']['energy'] > 0:
                 print(f'Can still fight with chance of {win_chance}')
-                await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\n"
-                                                                     f"Статус: Готов еще бить, шанс на успех: {win_chance}")
+                await change_status(f"Готов еще бить, шанс на успех: {win_chance}")
                 if hero['space']['cosmos']:
                     if not hero['space']['cosmos_farm_seek']:
                         now = datetime.now()
                         resp = now + timedelta(minutes=15)
                         resp_text = resp.strftime("%H:%M:%S")
-                        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\n"
-                                                                             f"Статус: Жду реса моба в {resp_text}")
+                        await change_status(f"Жду реса моба в {resp_text}")
                         hero['state'] = 'waiting for mob res'
                         await asyncio.sleep(15*60)
-                        hero['state'] = 'map seeker'
+                    hero['state'] = 'map seeker'
                     await client.send_message(const['game'], '🗺 Исследовать')
+
                 else:
                     await client.send_message(const["game"], '👀 Осмотреть местность')
             else:
-                await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\n"
-                                                                     f"Статус: Собираюсь домой")
+                await change_status("Собираюсь домой")
                 if hero['space']['cosmos']:
                     hero['state'] = 'back to ship'
                     await client.send_message(const['game'], '🗺 Исследовать')
@@ -52,8 +65,7 @@ async def after_fight(text):
                     const["last_action"] = '🌎 Новый Эдем'
                     hero['state'] = 'to home'
     else:
-        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\n"
-                                                             f"Статус: Умер, жду реса")
+        await change_status("Умер, жду реса")
     print(f"End of AFTER FIGHT, current status: {hero['state']}")
 
     update_file('hero', hero)

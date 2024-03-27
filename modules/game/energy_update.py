@@ -2,6 +2,7 @@ import asyncio
 from random import randint
 from modules.starter.starter import client, hero, const
 from modules.game.movement import do_move
+from modules.utils.script_tools import change_status
 
 
 async def energy_full(text):
@@ -14,7 +15,7 @@ async def energy_full(text):
             hero["hero"]['intox'] = True
         else:
             print('no intox, going to move')
-            await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Собираюсь двигаться")
+            await change_status("Собираюсь двигаться")
             await asyncio.sleep(randint(2, 15))
             # await do_move()
     elif 'Сервер был перезапущен' in text and hero['state'] != 'none':
@@ -46,16 +47,16 @@ async def energy_full(text):
                 await client.send_message(const["game"], '🌎 Новый Эдем')
                 const["last_action"] = '🌎 Новый Эдем'
             hero['state'] = 'to home'
-            await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Иду домой")
+            await change_status("Иду домой")
         elif hero['state'] == 'healed' and const["day_or_night"] == 'night' and (
                 hero['mode'] == 'farm' or hero['mode'] == 'boost'):
             await asyncio.sleep(randint(30, 125))
-            await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Ухожу из города")
+            await change_status("Ухожу из города")
             await do_move()
         elif hero['state'] == 'healed' and const["day_or_night"] == 'day' and (
                 hero['mode'] == 'farm' or hero['mode'] == 'boost'):
             await asyncio.sleep(randint(2, 15))
-            await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Ухожу из города")
+            await change_status("Ухожу из города")
             await do_move()
 
 
@@ -73,9 +74,9 @@ async def energy_plus(text):
         else:
             await client.send_message(const["game"], '🌎 Новый Эдем')
             const["last_action"] = '🌎 Новый Эдем'
-        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Иду домой")
+        await change_status("Иду домой")
         hero['state'] = 'to home'
     if hero['state'] == 'healed' and const["day_or_night"] == 'day' and (hero['mode'] == 'farm' or hero['mode'] == 'boost'):
         await asyncio.sleep(randint(2, 15))
-        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Ухожу из города")
+        await change_status("Ухожу из города")
         await do_move()

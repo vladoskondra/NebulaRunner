@@ -10,6 +10,7 @@ from modules.cosmos.planet_seek_prof import seek_prof
 from modules.cosmos.planet_seek_ship import seek_ship
 from modules.game.after_fight import after_fight
 from modules.utils.files import update_file
+from modules.utils.script_tools import change_status
 
 ship_modules_list = ['🛫 Взлетный Ускоритель: ', '✈️ Импульсный Двигатель: ', '☄️ Гипердвигатель: ',
                      '🏥 Система Исцеления: ', '🧿 Планетарный сканер: ', '👀 Модуль Элементального Видения: ',
@@ -204,10 +205,7 @@ async def cosmos(event):
                 elif hero["hero"]['energy'] == 0 and (hero['mode'] == 'farm' or hero["hero"]['intox'] is True):
                     print('going to farm prof')
                     hero['state'] = 'going to prof'
-                    try:
-                        await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Иду на профу")
-                    except:
-                        print('cant edit status by space prof')
+                    await change_status("Иду на профу")
                     await asyncio.sleep(randint(2, 5))
                     target = await seek_prof(text, target, my_pos)
             if type(target) == list and target[0] == 'No path':
@@ -230,17 +228,18 @@ async def cosmos(event):
             hero['state'] = 'back to ship'
             await client.send_message(const['game'], '🗺 Исследовать')
         else:
-            win_chance = await fight_simulation()
+            target_mob_lvl = int(text.split('Ур:')[1].split(' ')[0])
+            win_chance = await fight_simulation(optional_mob=target_mob_lvl)
             if win_chance >= 100 and hero["hero"]['energy'] > 0:
                 print(f'Can still fight with chance of {win_chance}')
-                try:
-                    await client.edit_message('me', const["msg_status"], f"{const['orig_msg_status']}\n\nСтатус: Готов бить, шанс на успех: {win_chance}")
-                except:
-                    print('cant edit message text')
+                await change_status(f"Готов бить, шанс на успех: {win_chance}")
                 hero['state'] = 'starts fight'
                 await event.click(0)
             elif win_chance >= 99.5 and hero["hero"]['energy'] == 0 and hero['mode'] == 'boost' and not hero["hero"]['intox']:
                 await client.send_message(const["game"], '/potions')
+            else:
+                hero['state'] = 'back to ship'
+                await client.send_message(const['game'], '🗺 Исследовать')
     if 'Вы вступаете в бой с:' in text:
         hero['state'] = 'after fight'
         print(f'going to AFTER FARM, status cur: {hero["state"]}')
