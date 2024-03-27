@@ -67,13 +67,14 @@ async def user_handler(event):
         const['orig_msg_status'] = f'Включен режим **{hero["mode"]}**'
         if text.lower() == '.stop':
             received = const['farm_received']
-            stop_text = f'Бот остановлен\n\n' \
-                                       f'**Получено за сессию:**\n' \
-                                       f'**Опыт:** {received["exp"]}'
-            if received['items']:
-                stop_text += f"\n**Получено:**\n"
-                for item in received['items']:
-                    stop_text += f"• {item['name']} — [x{item['ctx']}]\n"
+            stop_text = f'Бот остановлен\n\n'
+            if received:
+                stop_text += f'**Получено за сессию:**\n' \
+                             f'**Опыт:** {received["exp"]}'
+                if received['items']:
+                    stop_text += f"\n**Получено:**\n"
+                    for item in received['items']:
+                        stop_text += f"• {item['name']} — [x{item['ctx']}]\n"
             const['orig_msg_status'] = stop_text
             const['farm_received'] = False
             hero['state'] = 'none'
