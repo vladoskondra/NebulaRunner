@@ -3,6 +3,7 @@ import asyncio
 from modules.starter.starter import client, hero, const
 from modules.peh.peh import get_peh_point
 from modules.utils.files import update_file
+from modules.utils.script_tools import boolean_emojis
 
 
 EMOJI_ON = '✅'
@@ -35,7 +36,32 @@ async def user_handler(event):
                                         '• `.cosmos on/off` — включит, если ты в космосе)\n\n'
                                         '**===== КОСМОС =====**\n'
                                         '• `.cosmos_mode` — переключатель режима фарма в космосе')
-
+    if text == '.cfg':
+        HERO = hero['hero']
+        GNR_CFG = hero['general_cfg']
+        FARM_CFG = hero['farm_cfg']
+        PROF_CFG = hero['prof_cfg']
+        SPACE = hero['space']
+        status_text = f"**Персонаж:** {HERO['name']}\n" \
+                      f"**Лвл.:** {HERO['lvl']}\n" \
+                      f"**Режим:** {hero['mode']}\n" \
+                      f"**Последняя локация:** {hero['cur_loc']}\n" \
+                      f"**Проход каптчи:** {boolean_emojis(GNR_CFG['captcha'])}\n" \
+                      f"**Эдем:** {boolean_emojis(GNR_CFG['edem'])}\n" \
+                      f"**Космос:** {boolean_emojis(SPACE['cosmos'])}\n\n" \
+                      f"**===== ГРИНД =====**\n" \
+                      f"**Лока:** {FARM_CFG['farm_loc']}\n" \
+                      f"**Мобы:** {FARM_CFG['mob_lvl']} {FARM_CFG['mob_cls']}\n" \
+                      f"**Гринд всех уровней:** {boolean_emojis(FARM_CFG['any_lvls'])}\n" \
+                      f"**Обязательный хил:** {boolean_emojis(FARM_CFG['force_heal'])}\n\n" \
+                      f"**===== ПРОФА =====**\n" \
+                      f"**Ресурс:** {PROF_CFG['prof']}\n" \
+                      f"**Лока:** {PROF_CFG['prof_loc']}\n" \
+                      f"**Ловить редкие:** {boolean_emojis(PROF_CFG['catch_rare'])}\n" \
+                      f"**Мультитул:** {boolean_emojis(PROF_CFG['multitool'])}\n\n" \
+                      f"**===== КОСМОС =====**\n" \
+                      f"**Ждать реса моба:** {boolean_emojis(not SPACE['cosmos_farm_seek'])}\n"
+        await client.send_message('me', status_text)
     if text == '.stop' or text == '.farm' or text == '.dg' or text == '.boost' or text == '.peh':
         hero['mode'] = text.split('.')[1]
         const['orig_msg_status'] = f'Включен режим **{hero["mode"]}**'

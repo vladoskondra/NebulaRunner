@@ -41,7 +41,7 @@ async def seek_mob(text, target_mob, my_pos):
                                 await client.send_message(const['game'], path[0])
                                 path.pop(0)
                                 await asyncio.sleep(randint(1, 2))
-                            if math.dist(target_mob, ship[0]) < 2:
+                            if ship and math.dist(target_mob, ship[0]) < 2:
                                 possible_dirs = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
                                 path = []
                                 for pd in possible_dirs:
