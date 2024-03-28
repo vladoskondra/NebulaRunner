@@ -19,7 +19,7 @@ async def find_path(map_list, target_mob, my_pos, prof_e):
     planet_map = await create_planet_map(map_list)
     found_prof = await prof_coord(map_list)
     target_mob = min(found_prof, key=lambda x: math.dist(x, my_pos))
-    while hero['state'] == 'map seeker':
+    while hero['state'] == 'going to farm prof':
         if my_pos == target_mob:
             return target_mob
         else:
