@@ -118,9 +118,12 @@ async def user_handler(event):
         await event.reply(f'Локация для фарма: **{hero["farm_cfg"]["farm_loc"]}**')
     if '.prof ' in text:
         prof = text.split('prof ')[1]
-        hero["prof_cfg"]['prof'] = prof
-        await reformat_prof_loc()
-        await event.reply(f'Локация для фарма профессии {hero["prof_cfg"]["prof"]}: **{hero["prof_cfg"]["prof_loc"]}**')
+        if prof in ['трава', 'лес', 'камень', 'рыба']:
+            hero["prof_cfg"]['prof'] = prof
+            await reformat_prof_loc()
+            await event.reply(f'Локация для фарма профессии {hero["prof_cfg"]["prof"]}: **{hero["prof_cfg"]["prof_loc"]}**')
+        else:
+            await event.reply(f'Неверно указана профессия. Возможные профессии: __трава, лес, камень, рыба__')
     if '.multitool ' in text:
         if text == '.multitool on':
             hero['prof_cfg']['multitool'] = True

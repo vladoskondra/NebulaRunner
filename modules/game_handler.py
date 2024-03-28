@@ -46,9 +46,9 @@ async def game_handler(event):
         if 'Интоксикация восстановлена!' in text and hero["hero"]['intox'] is True:
             hero["hero"]['intox'] = False
         # ENERGY UPDATE
-        elif any(fel in text for fel in full_energy_list):
+        if any(fel in text for fel in full_energy_list):
             await energy_full(text)
-        elif '⚡️ +1 к энергии' in text:
+        if '⚡️ +1 к энергии' in text:
             await energy_plus(text)
         if 'Вы прибыли ' in text:
             if 'Новый Эдем' in text:

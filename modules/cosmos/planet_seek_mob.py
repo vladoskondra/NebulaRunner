@@ -20,26 +20,24 @@ async def find_path(map_list, target_mob, my_pos, mob_e):
     planet_map = await create_planet_map(map_list)
     found_prof = await mobs_coord(map_list)
     target_mob = min(found_prof, key=lambda x: math.dist(x, my_pos))
-    if my_pos == target_mob:
-        return target_mob
-    else:
-        path = dijkstra(planet_map, my_pos, target_mob)
-        print('Found path after lurking')
-        if path:
-            # target_mob = await find_path(map_list, path, target_mob, my_pos)
-            ship = await ship_coord(map_list)
-            if ship:
-                print(f"Distance between ship and target: {math.dist(target_mob, ship[0])}")
-            if not ship or math.dist(target_mob, ship[0]) >= 2.5:
-                del path[-1]
-            if len(path) <= 1:
-                target_mob = my_pos
-            else:
+    while hero['state'] == 'map seeker':
+        if my_pos == target_mob:
+            return target_mob
+        else:
+            path = dijkstra(planet_map, my_pos, target_mob)
+            print('Found path after lurking')
+            if path:
+                # target_mob = await find_path(map_list, path, target_mob, my_pos)
+                ship = await ship_coord(map_list)
+                if ship:
+                    print(f"Distance between ship and target: {math.dist(target_mob, ship[0])}")
+                # if not ship or math.dist(target_mob, ship[0]) >= 2.5:
+                #     del path[-1]
                 while path:
                     await client.send_message(const['game'], path[0])
                     path.pop(0)
                     await asyncio.sleep(randint(1, 2))
-                if math.dist(target_mob, ship[0]) < 2:
+                if ship and math.dist(target_mob, ship[0]) < 2.5:
                     possible_dirs = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
                     path = []
                     for pd in possible_dirs:
@@ -51,11 +49,11 @@ async def find_path(map_list, target_mob, my_pos, mob_e):
                     await client.send_message(const['game'], path[0])
                     await asyncio.sleep(randint(1, 2))
                 target_mob = my_pos
-            return target_mob
-        else:
-            map_list = await lurking(planet_map, my_pos, mob_e)
-            target_mob = await find_path(map_list, target_mob, my_pos, mob_e)
-            return target_mob
+                return target_mob
+            else:
+                map_list = await lurking(planet_map, my_pos, mob_e)
+                target_mob = await find_path(map_list, target_mob, my_pos, mob_e)
+                return target_mob
 
 
 async def lurking(planet_map, my_pos, mob_e):

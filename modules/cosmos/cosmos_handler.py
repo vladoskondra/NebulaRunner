@@ -248,8 +248,16 @@ async def cosmos(event):
         await asyncio.sleep(1)
         await event.click(0)
     if '⚠️ Ресурс истощен, расщепление остановлено' in text:
+        print('Prof resource is empty, looking for new one')
         await asyncio.sleep(randint(1, 3))
         hero['state'] = 'map seeker'
+        await client.send_message(const['game'], '🗺 Исследовать')
+    if '⚠️ Произошла ошибка' in text and 'Too Many Requests: retry after' in text:
+        prev_state = hero['state']
+        hero['state'] = 'waiting for error'
+        time_to_wait = int(text.split('Too Many Requests: retry after ')[1].split('.')[0])
+        await asyncio.sleep(time_to_wait)
+        hero['state'] = prev_state
         await client.send_message(const['game'], '🗺 Исследовать')
 
     update_file('hero', hero)
