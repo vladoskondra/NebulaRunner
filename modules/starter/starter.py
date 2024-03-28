@@ -15,7 +15,7 @@ const = {
     "fish_timer": False,
     "peh_list": [],
     "pin_point": '',
-    "farm_received": False
+    "farm_received": {"exp": 0, "items": []}
 }
 
 config = read_file('config')

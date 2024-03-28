@@ -68,15 +68,16 @@ async def user_handler(event):
         if text.lower() == '.stop':
             received = const['farm_received']
             stop_text = f'Бот остановлен\n\n'
-            if received:
-                stop_text += f'**Получено за сессию:**\n' \
-                             f'**Опыт:** {received["exp"]}'
+            if received['exp'] > 0 or received['items']:
+                stop_text += f'**Получено за сессию:**\n'
+                if received['exp'] > 0:
+                    stop_text += f'**📖 Опыт:** {received["exp"]}\n'
                 if received['items']:
-                    stop_text += f"\n**Получено:**\n"
+                    stop_text += f"**🎒 Предметы:**\n"
                     for item in received['items']:
                         stop_text += f"• {item['name']} — [x{item['ctx']}]\n"
             const['orig_msg_status'] = stop_text
-            const['farm_received'] = False
+            const['farm_received'] = {"exp": 0, "items": []}
             hero['state'] = 'none'
             hero['loc'] = 'default'
         const["msg_status"] = await client.send_message('me', const['orig_msg_status'])
