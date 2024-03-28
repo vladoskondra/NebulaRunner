@@ -54,6 +54,8 @@ async def status():
     await client.send_message('me', f"Загружены настройки: \n\n{status_text}")
     const['orig_msg_status'] = f'Включен режим **{hero["mode"]}**'
     const["msg_status"] = await client.send_message('me', const['orig_msg_status'])
+    if hero['mode'] in ['farm', 'boost'] and hero['space']['cosmos']:
+        await client.send_message(const['game'], '🗺 Исследовать')
 
 
 if __name__ == '__main__':
