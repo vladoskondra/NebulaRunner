@@ -27,15 +27,17 @@ async def find_path(map_list, target_mob, my_pos, prof_e):
             print('Found path after lurking')
             if path:
                 # target_mob = await find_path(map_list, path, target_mob, my_pos)
-                ship = await ship_coord(map_list)
-                if ship:
-                    print(f"Distance between ship and target: {math.dist(target_mob, ship[0])}")
                 # if not ship or math.dist(target_mob, ship[0]) >= 2.5:
                 #     del path[-1]
                 while path:
                     await client.send_message(const['game'], path[0])
                     path.pop(0)
                     await asyncio.sleep(randint(1, 2))
+                new_msg = await client.get_messages(const['game'], ids=const['space_map_msg'])
+                map_list = await make_map_list(new_msg.message)
+                ship = await ship_coord(map_list)
+                if ship:
+                    print(f"Distance between ship and target: {math.dist(target_mob, ship[0])}")
                 if ship and math.dist(target_mob, ship[0]) < 2.5:
                     possible_dirs = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
                     path = []
