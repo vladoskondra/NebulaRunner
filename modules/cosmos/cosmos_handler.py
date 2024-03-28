@@ -204,7 +204,7 @@ async def cosmos(event):
                             target = await seek_ship(text, target, my_pos)
                 elif hero["hero"]['energy'] == 0 and (hero['mode'] == 'farm' or hero["hero"]['intox'] is True):
                     print('going to farm prof')
-                    hero['state'] = 'going to prof'
+                    hero['state'] = 'going to farm prof'
                     await change_status("Иду на профу")
                     await asyncio.sleep(randint(2, 5))
                     target = await seek_prof(text, target, my_pos)
