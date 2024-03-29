@@ -48,8 +48,20 @@ async def find_path(map_list, target_mob, my_pos, mob_e):
                             break
                     await client.send_message(const['game'], path[0])
                     await asyncio.sleep(randint(1, 2))
-                target_mob = my_pos
-                return target_mob
+                await asyncio.sleep(1)
+                new_msg = await client.get_messages(const['game'], ids=const['space_map_msg'])
+                map_list = await make_map_list(new_msg.message)
+                mob_e = await mob_emoji()
+                isMobExist = []
+                for yy in range(-1, 2):
+                    for xx in range(-1, 2):
+                        isMobExist.append(map_list[int(my_pos[0]) + yy][int(my_pos[1]) + xx])
+                if any(m in mob_e for m in isMobExist):
+                    target_mob = my_pos
+                    return target_mob
+                else:
+                    target_mob = await seek_mob(new_msg.message, (math.inf, math.inf), my_pos)
+                    return target_mob
             else:
                 map_list = await lurking(planet_map, my_pos, mob_e)
                 target_mob = await find_path(map_list, target_mob, my_pos, mob_e)

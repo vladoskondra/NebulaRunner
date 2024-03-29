@@ -27,6 +27,7 @@ async def cosmos(event):
     if hasattr(message, 'reply_markup') and type(message.reply_markup) == ReplyKeyboardMarkup:
         buttons = message.reply_markup
     if any(fel in text for fel in full_energy_list):
+        hero['hero']['energy'] = 5
         await asyncio.sleep(randint(1, 3))
         hero['state'] = 'map seeker'
         await client.send_message(const['game'], '🗺 Исследовать')
