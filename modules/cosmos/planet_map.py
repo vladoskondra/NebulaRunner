@@ -1,14 +1,20 @@
 from modules.starter.starter import hero
+import functools
+import operator
+import re
+import emoji
+import regex
 
 
 async def create_planet_map(map_list):
     map_dict = {}
     map_limit = (hero["space"]['planet_size']-1, hero["space"]['planet_size']-1)
-    barriers = ['🟦', '🏔', '❄', '🟧']
+    barriers = ['🟦', '🏔', '❄', '❄️', '🟧']
     # print(map_limit)
     for h in range(len(map_list)):
-        # print(len(map_list[h]))
+        # print(len(map_list))
         for w in range(len(map_list[h])):
+            # print(len(map_list[h]))
             dir_E = None
             dir_W = None
             dir_N = None
@@ -68,6 +74,11 @@ async def make_map_list(text):
     map_text = text.split('/mapSize /mType /cruiseOn\n\n')[1]
     text_rows = map_text.split('\n')
     for row in text_rows:
-        map_row = [i for i in [*row] if i != '️']
-        map_list.append(map_row)
+        # for l in range(len(row)):
+        #     print(row[l])
+        emojis = regex.findall(r'\X', row)
+        # print(emojis)
+        # split_string = row.split()
+        # map_row = [i for i in emojis if i in emoji.UNICODE_EMOJI.keys()]
+        map_list.append(emojis)
     return map_list

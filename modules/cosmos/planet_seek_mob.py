@@ -12,6 +12,7 @@ async def seek_mob(text, target_mob, my_pos):
     while target_mob != my_pos:
         mob_e = await mob_emoji()
         map_list = await make_map_list(text)
+        # print(map_list)
         target_mob = await find_path(map_list, target_mob, my_pos, mob_e)
         return target_mob
 

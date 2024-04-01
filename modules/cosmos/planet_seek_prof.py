@@ -11,6 +11,7 @@ async def seek_prof(text, target_mob, my_pos):
     while target_mob != my_pos:
         prof_e = hero["prof_cfg"]['prof_loc']
         map_list = await make_map_list(text)
+        # print(map_list)
         target_mob = await find_path(map_list, target_mob, my_pos, prof_e)
         return target_mob
 
