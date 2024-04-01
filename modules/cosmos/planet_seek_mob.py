@@ -45,7 +45,7 @@ async def find_path(map_list, target_mob, my_pos, mob_e):
                         new_pos = tuple(map(lambda i, j: i + j, target_mob, pd))
                         planet_map = await create_planet_map(map_list)
                         path = dijkstra(planet_map, target_mob, new_pos)
-                        if path and math.dist(target_mob, new_pos) < 2 and math.dist(target_mob, ship[0]) >= 2:
+                        if path and math.dist(target_mob, new_pos) < 2.5 and math.dist(target_mob, ship[0]) > 2.5:
                             break
                     await client.send_message(const['game'], path[0])
                     await asyncio.sleep(randint(1, 2))

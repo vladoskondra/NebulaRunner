@@ -261,5 +261,32 @@ async def cosmos(event):
         await asyncio.sleep(time_to_wait)
         hero['state'] = prev_state
         await client.send_message(const['game'], '🗺 Исследовать')
+    if '🎒 Запас ' in text and '📖 Опыт: ' in text and '🗺️ Карта: /map' in text:
+        const['farm_received']['exp'] += int(text.split('📖 Опыт: ')[1].split('\n')[0].replace(' ', ''))
+        got_resource_raw = text.split(' (')[0]
+        got_resource = ''
+        if got_resource_raw == '🅾️':
+            got_resource = 'Кислород'
+        elif got_resource_raw == '⚪️':
+            got_resource = 'Азот'
+        elif got_resource_raw == '🉑':
+            got_resource = 'Натрий'
+        elif got_resource_raw == '🔘':
+            got_resource = 'Углерод'
+        elif got_resource_raw == '🔵':
+            got_resource = 'Дигидроген'
+        elif got_resource_raw == '🔅':
+            got_resource = 'Фосфор'
+        elif got_resource_raw == '🔴':
+            got_resource = 'Ферритная пыль'
+        elif got_resource_raw == '🟠':
+            got_resource = 'Медная пыль'
+        resource_ctx = int(text.split(' (+')[1].split(') ')[0])
+        if any(it_d['name'] == got_resource for it_d in const['farm_received']['items']):
+            f_it = next(it_d for it_d in const['farm_received']['items'] if it_d['name'] == got_resource)
+            it_index = const['farm_received']['items'].index(f_it)
+            const['farm_received']['items'][it_index]['ctx'] += resource_ctx
+        else:
+            const['farm_received']['items'].append({'name': got_resource, 'ctx': resource_ctx})
 
     update_file('hero', hero)
