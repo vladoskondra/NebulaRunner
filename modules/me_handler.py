@@ -35,7 +35,9 @@ async def user_handler(event):
                                         '• `.edem on/off` — включи, если ты в Эдеме\n'
                                         '• `.cosmos on/off` — включит, если ты в космосе)\n\n'
                                         '**===== КОСМОС =====**\n'
-                                        '• `.cosmos_mode` — переключатель режима фарма в космосе')
+                                        '• `.cosmos_mode` — переключатель режима фарма в космосе\n\n'
+                                        '**===== ОСТАЛЬНОЕ =====**\n'
+                                        '• `.cfg` — посмотреть текущие настройки\n')
     if text == '.cfg':
         HERO = hero['hero']
         GNR_CFG = hero['general_cfg']
