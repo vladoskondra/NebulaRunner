@@ -160,12 +160,6 @@ async def cosmos(event):
             and hero['state'] in ['map seeker', 'back to ship']:
         print(f"Got map, current status: {hero['state']}")
         await asyncio.sleep(randint(1, 3))
-        map_list = []
-        map_text = text.split('/mapSize /mType /cruiseOn\n\n')[1]
-        text_rows = map_text.split('\n')
-        for row in text_rows:
-            map_row = [i for i in [*row] if i != '️']
-            map_list.append(map_row)
         if hero["space"]['planet_size'] == 0:
             await client.send_message(const['game'], '/mapSize')
             await asyncio.sleep(1)
