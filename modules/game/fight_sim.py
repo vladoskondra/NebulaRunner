@@ -116,9 +116,10 @@ async def fight_simulation(optional_mob=0):
             wins_list[fmi]['wr'].append(winRate)
         else:
             wins_list.append({'lvl': enemy_obj['lvl'], 'wr': [winRate]})
+    # print(f"wind_list: {wins_list}")
     for wl in wins_list:
-        for wr in wl['wr']:
-            if all(w >= 100 for w in wr):
-                ttl_wl.append({'lvl': wl['lvl'], 'wr': 100})
+        print(f"wl: {wl}")
+        if all(w >= 100 for w in wl['wr']):
+            ttl_wl.append({'lvl': wl['lvl'], 'wr': 100})
 
     return max(ttl_wl, key=lambda x:x['lvl'])
