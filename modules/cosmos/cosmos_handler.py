@@ -185,6 +185,7 @@ async def cosmos(event):
                     target = await seek_ship(text, target, my_pos)
             elif hero['state'] == 'map seeker':
                 win_chance = await fight_simulation()
+                print(f"win chance: {win_chance}")
                 if hero["hero"]['energy'] > 0:
                     if win_chance >= 100:
                         target = await seek_mob(text, target, my_pos)
