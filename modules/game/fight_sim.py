@@ -37,7 +37,7 @@ async def fight_simulation(optional_mob=0):
     if hero['space']['cosmos']:
         lvls_to_sim = [hero["farm_cfg"]['mob_lvl']]
         if hero['farm_cfg']['any_lvls']:
-            lvls_to_sim = get_planet_mobs()
+            lvls_to_sim = await get_planet_mobs()
         for pot_cls in ['warrior', 'ranger', 'mage']:
             if optional_mob == 0:
                 for lts in lvls_to_sim:
