@@ -1,7 +1,7 @@
 from modules.starter.starter import hero
 import random
 import enum
-from modules.cosmos.galaxy_gps import get_planet_mobs
+from data.planets import tiles_index
 from data.mobs import get_mob
 
 
@@ -9,6 +9,13 @@ class MIN_DD_CLASS(enum.Enum):
     warrior = 0.05
     ranger = 0.04
     mage = 0.03
+
+
+async def get_planet_mobs():
+    cur_planet = hero['space']['space_seq']
+    f_planet = next(planet for planet in tiles_index if planet['seq'] == cur_planet)
+    mobs = range(f_planet['mobs'][0], f_planet[1] + 1)
+    return mobs
 
 
 async def fight_simulation(optional_mob=0):
