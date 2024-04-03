@@ -132,7 +132,7 @@ async def fight_simulation(optional_mob=0):
     # print(f"wind_list: {wins_list}")
     for wl in wins_list:
         print(f"wl: {wl}")
-        if all(w >= 100 for w in wl['wr']):
+        if all(w >= 98 for w in wl['wr']):
             ttl_wl.append({'lvl': wl['lvl'], 'wr': 100})
 
     return max(ttl_wl, key=lambda x:x['lvl'])
