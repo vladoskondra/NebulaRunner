@@ -1,6 +1,7 @@
 from modules.starter.starter import hero
 import random
 import enum
+from modules.cosmos.galaxy_gps import get_planet_mobs
 from data.mobs import get_mob
 
 
@@ -27,12 +28,17 @@ async def fight_simulation(optional_mob=0):
     mob_cls = 'any'
     mobs_list = []
     if hero['space']['cosmos']:
+        lvls_to_sim = [hero["farm_cfg"]['mob_lvl']]
+        if hero['farm_cfg']['any_lvls']:
+            lvls_to_sim = get_planet_mobs()
         for pot_cls in ['warrior', 'ranger', 'mage']:
             if optional_mob == 0:
-                mob = get_mob(hero["farm_cfg"]['mob_lvl'], cls=pot_cls)
+                for lts in lvls_to_sim:
+                    mob = get_mob(lts, cls=pot_cls)
+                    mobs_list.append(mob)
             else:
                 mob = get_mob(optional_mob, cls=pot_cls)
-            mobs_list.append(mob)
+                mobs_list.append(mob)
     else:
         if hero["farm_cfg"]['mob_cls'] != 'any':
             mob_cls = hero["farm_cfg"]['mob_cls']

@@ -106,6 +106,13 @@ def get_planet_seq(planet_name):
     return planet_seq
 
 
+async def get_planet_mobs():
+    cur_planet = hero['space']['space_seq']
+    f_planet = next(planet for planet in tiles_index if planet['seq'] == cur_planet)
+    mobs = range(f_planet['mobs'][0], f_planet[1] + 1)
+    return mobs
+
+
 async def mob_emoji():
     cur_planet = next(seq for seq in tiles_index if seq['seq'] == hero["space"]['space_seq'])
     emoji_list = ['🐺', '🐙', '🐍', '🦑']
