@@ -35,7 +35,7 @@ async def after_fight(text):
             await client.send_message(const['game'], '🗺 Исследовать')
         else:
             win_chance = await fight_simulation()
-            if win_chance >= 100 and hero['hero']['energy'] > 0:
+            if 'wr' in win_chance and win_chance['wr'] >= 100 and hero['hero']['energy'] > 0:
                 print(f'Can still fight with chance of {win_chance}')
                 await change_status(f"Готов еще бить, шанс на успех: {win_chance}")
                 if hero['space']['cosmos']:

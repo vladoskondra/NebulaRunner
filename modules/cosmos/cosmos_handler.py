@@ -187,7 +187,7 @@ async def cosmos(event):
                 win_chance = await fight_simulation()
                 print(f"win chance: {win_chance}")
                 if hero["hero"]['energy'] > 0:
-                    if win_chance >= 100:
+                    if 'wr' in win_chance and win_chance['wr'] >= 100:
                         target = await seek_mob(text, target, my_pos)
                     else:
                         hero['state'] = 'back to ship'
@@ -196,7 +196,7 @@ async def cosmos(event):
                             text = new_msg.message
                             target = await seek_ship(text, target, my_pos)
                 elif hero["hero"]['energy'] == 0 and hero['mode'] == 'boost' and hero["hero"]['intox'] is False:
-                    if win_chance >= 100:
+                    if 'wr' in win_chance and win_chance['wr'] >= 100:
                         await asyncio.sleep(randint(2, 7))
                         await client.send_message(const["game"], '/potions')
                         await asyncio.sleep(randint(2, 7))
@@ -233,12 +233,12 @@ async def cosmos(event):
         else:
             target_mob_lvl = int(text.split('Ур:')[1].split(' ')[0])
             win_chance = await fight_simulation(optional_mob=target_mob_lvl)
-            if win_chance >= 100 and hero["hero"]['energy'] > 0:
+            if 'wr' in win_chance and win_chance['wr'] >= 100 and hero["hero"]['energy'] > 0:
                 print(f'Can still fight with chance of {win_chance}')
                 await change_status(f"Готов бить, шанс на успех: {win_chance}")
                 hero['state'] = 'starts fight'
                 await event.click(0)
-            elif win_chance >= 99.5 and hero["hero"]['energy'] == 0 and hero['mode'] == 'boost' and not hero["hero"]['intox']:
+            elif 'wr' in win_chance and win_chance['wr'] >= 100 and hero["hero"]['energy'] == 0 and hero['mode'] == 'boost' and not hero["hero"]['intox']:
                 await client.send_message(const["game"], '/potions')
             else:
                 hero['state'] = 'back to ship'

@@ -42,6 +42,7 @@ async def fight_simulation(optional_mob=0):
             mob = get_mob(optional_mob, cls=mob_cls)
         mobs_list.append(mob)
     wins_list = []
+    ttl_wl = []
     for m in mobs_list:
         enemy_obj = {
             'name': 'mob',
@@ -109,5 +110,15 @@ async def fight_simulation(optional_mob=0):
             first['hpl'] = first['hps']
             second['hpl'] = second['hps']
         winRate = float('{:.2f}'.format((wins['hero'] / fight_loop) * 100))
-        wins_list.append(winRate)
-    return min(wins_list)
+        if any(mwr['lvl'] == enemy_obj['lvl'] for mwr in wins_list):
+            f_m = next(mwr for mwr in wins_list if mwr['lvl'] == enemy_obj['lvl'])
+            fmi = wins_list.index(f_m)
+            wins_list[fmi]['wr'].append(winRate)
+        else:
+            wins_list.append({'lvl': enemy_obj['lvl'], 'wr': [winRate]})
+    for wl in wins_list:
+        for wr in wl['wr']:
+            if all(w == 100 for w in wr):
+                ttl_wl.append({'lvl': wl['lvl'], 'wr': 100})
+
+    return max(ttl_wl, key=lambda x:x['lvl'])

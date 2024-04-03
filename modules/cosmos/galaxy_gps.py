@@ -114,7 +114,7 @@ async def mob_emoji():
     if hero['farm_cfg']['any_lvls']:
         for am in all_mobs:
             win_chance = await fight_simulation(optional_mob=am)
-            if win_chance >= 100:
+            if 'wr' in win_chance and win_chance['wr'] >= 100:
                 index = all_mobs.index(am)
                 search_emoji.append(emoji_list[index])
     else:
