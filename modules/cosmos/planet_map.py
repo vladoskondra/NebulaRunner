@@ -1,8 +1,4 @@
 from modules.starter.starter import hero
-import functools
-import operator
-import re
-import emoji
 import regex
 
 
