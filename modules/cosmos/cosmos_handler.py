@@ -263,7 +263,7 @@ async def cosmos(event):
         hero['state'] = prev_state
         await client.send_message(const['game'], '🗺 Исследовать')
     if '🎒 Запас ' in text and '📖 Опыт: ' in text and '🗺️ Карта: /map' in text:
-        const['farm_received']['exp'] += int(text.split('📖 Опыт: ')[1].split('\n')[0].replace(' ', ''))
+        const['farm_received']['exp'] += int(text.split('📖 Опыт: ')[1].split('\n')[0].replace(' ', '').replace('_', ''))
         got_resource_raw = text.split(' (')[0]
         got_resource = ''
         if got_resource_raw == '🅾️':
