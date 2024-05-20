@@ -136,4 +136,5 @@ async def fight_simulation(optional_mob=0):
             print(f'added {wl["lvl"]} with all chances >= 98 ({wl})')
             ttl_wl.append({'lvl': wl['lvl'], 'wr': 100})
     print(f"ttl_wl: {ttl_wl}")
-    return max(ttl_wl, key=lambda x:x['lvl'])
+    max_wr = max(ttl_wl, key=lambda x:x['lvl']) if ttl_wl else []
+    return max_wr
